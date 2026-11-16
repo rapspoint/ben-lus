@@ -1,0 +1,3186 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Argon Auto-Editor Web Studio — High Retention AI Video Engine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        argon: {
+                            950: '#070B14',
+                            900: '#0D1322',
+                            800: '#151E32',
+                            700: '#1E2942',
+                            600: '#2B3B5E',
+                            accent: '#00F0FF',
+                            emerald: '#10B981',
+                            amber: '#F59E0B',
+                            rose: '#F43F5E',
+                            violet: '#8B5CF6'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #070B14;
+            color: #F1F5F9;
+            overflow-x: hidden;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0D1322;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2B3B5E;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #38BDF8;
+        }
+        .glass-panel {
+            background: rgba(13, 19, 34, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(56, 189, 248, 0.14);
+        }
+        .argon-glow {
+            box-shadow: 0 0 25px -5px rgba(0, 240, 255, 0.25);
+        }
+        .golden-glow {
+            box-shadow: 0 0 20px -3px rgba(245, 158, 11, 0.35);
+        }
+        input[type="range"] {
+            accent-color: #00F0FF;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-sans antialiased selection:bg-cyan-500 selection:text-slate-950">
+
+    <!-- Top Studio Header -->
+    <header class="border-b border-slate-800/80 bg-argon-900/90 sticky top-0 z-40 backdrop-blur-md">
+        <div class="max-w-[1600px] mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 via-sky-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
+                    <svg class="w-6 h-6 text-slate-950" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                    </svg>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-lg sm:text-xl font-extrabold tracking-tight bg-gradient-to-r from-white via-cyan-200 to-sky-400 bg-clip-text text-transparent">
+                            ARGON AUTO-EDITOR STUDIO
+                        </h1>
+                        <span class="px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 rounded-full">
+                            Web CV Engine v4.0 Dual-Decoder
+                        </span>
+                    </div>
+                    <p class="text-xs text-slate-400">
+                        Dual-Decoder Anti-Stutter • Filter Anti-Duplikat pHash 64-Bit • Smart Auto-Ducking VO • Clean MP4 1080p (9:16 & 16:9)
+                    </p>
+                </div>
+            </div>
+
+            <!-- Quick Action & Demo Bar -->
+            <div class="flex items-center gap-2.5 flex-wrap">
+                <button id="btnRerollSequence" class="px-3 py-2 rounded-xl text-xs font-semibold bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/35 transition flex items-center gap-1.5 cursor-pointer" title="Buat variasi urutan scene & transisi baru dalam 1 klik">
+                    <span>🔄 Buat Variasi Urutan Baru</span>
+                </button>
+
+                <button id="btnLoadDemo" class="px-3.5 py-2 rounded-xl text-xs font-semibold bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-300 border border-indigo-500/40 transition flex items-center gap-2 cursor-pointer">
+                    <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                    <span>Muat 4 Sampel Demo Otomatis</span>
+                </button>
+
+                <div class="h-6 w-[1px] bg-slate-800 hidden sm:block"></div>
+
+                <div id="statusBadge" class="px-3 py-1.5 rounded-xl bg-slate-800/90 border border-slate-700 text-xs font-mono text-slate-300 flex items-center gap-2">
+                    <span id="statusDot" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span id="statusText">Engine Siap</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Studio Workspace -->
+    <main class="flex-1 max-w-[1600px] w-full mx-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- LEFT COLUMN: Media Input & Argon High-Logic Parameters (4 cols) -->
+        <section class="lg:col-span-4 flex flex-col gap-5">
+
+            <!-- Card 1: Media Input (Multi-Video + Voice Over MP3) -->
+            <div class="glass-panel rounded-2xl p-5 flex flex-col gap-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-sm font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-2">
+                        <span class="w-5 h-5 rounded-md bg-cyan-500/20 text-cyan-300 flex items-center justify-center text-xs font-mono">1</span>
+                        Input Bahan Video & Voice Over
+                    </h2>
+                    <span id="totalMediaCounter" class="text-xs font-mono text-slate-400">0 Video • 0 Audio</span>
+                </div>
+
+                <!-- Video Dropzone / Button -->
+                <div class="relative group">
+                    <input type="file" id="inputVideos" accept="video/mp4,video/webm,video/quicktime,video/*" multiple class="hidden">
+                    <label for="inputVideos" class="flex flex-col items-center justify-center p-4 border-2 border-dashed border-slate-700 hover:border-cyan-400/70 rounded-xl bg-argon-950/60 hover:bg-argon-800/40 transition cursor-pointer text-center">
+                        <svg class="w-7 h-7 text-cyan-400 mb-1.5 group-hover:scale-110 transition" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                        </svg>
+                        <span class="text-xs font-semibold text-slate-200">Pilih Bahan Video Mentah (Multi-File)</span>
+                        <span class="text-[11px] text-slate-400 mt-0.5">Mendukung .MP4, .WEBM, .MOV (Bisa pilih banyak sekaligus)</span>
+                    </label>
+                </div>
+
+                <!-- Uploaded Video List -->
+                <div id="videoFilesList" class="max-h-32 overflow-y-auto space-y-1.5 pr-1 hidden"></div>
+
+                <!-- Audio Voice Over Input -->
+                <div class="relative group">
+                    <input type="file" id="inputAudio" accept="audio/mpeg,audio/mp3,audio/wav,audio/ogg,audio/mp4,audio/*" class="hidden">
+                    <label for="inputAudio" class="flex items-center justify-between p-3.5 border border-slate-700 hover:border-amber-400/70 rounded-xl bg-argon-950/60 hover:bg-argon-800/40 transition cursor-pointer">
+                        <div class="flex items-center gap-3 min-w-0">
+                            <div class="w-9 h-9 rounded-lg bg-amber-500/15 border border-amber-500/30 flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/>
+                                </svg>
+                            </div>
+                            <div class="truncate">
+                                <div id="audioFileName" class="text-xs font-semibold text-slate-200 truncate">Pilih Voice Over (.MP3 / .WAV)</div>
+                                <div id="audioDurationLabel" class="text-[11px] font-mono text-amber-400/90">Durasi belum dikunci</div>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30 shrink-0">
+                            Telusuri
+                        </span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Card 2: Pengaturan Resolusi & Logika Kemampuan Argon -->
+            <div class="glass-panel rounded-2xl p-5 flex flex-col gap-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-sm font-bold uppercase tracking-wider text-cyan-400 flex items-center gap-2">
+                        <span class="w-5 h-5 rounded-md bg-cyan-500/20 text-cyan-300 flex items-center justify-center text-xs font-mono">2</span>
+                        Mode Edit & Konfigurasi Argon
+                    </h2>
+                    <span id="modeActivePill" class="text-[11px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">Auto-Edit Aktif</span>
+                </div>
+
+                <!-- Pilihan Mode Utama: Argon Auto-Edit vs Hanya Gabung (Tanpa Auto-Edit) -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-2">Pilih Mode Penggabungan Video & Audio:</label>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <button type="button" id="btnModeAutoEdit" class="p-3 rounded-xl border border-cyan-400 bg-cyan-500/15 text-left transition flex flex-col justify-between gap-1 cursor-pointer">
+                            <div class="flex items-center justify-between w-full">
+                                <span class="text-xs font-extrabold text-white">⚡ Argon Auto-Edit</span>
+                                <span id="badgeModeAuto" class="px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-cyan-400 text-slate-950">AKTIF</span>
+                            </div>
+                            <p class="text-[10px] text-cyan-200/90 leading-snug">
+                                Potong scene otomatis, buang duplikat, Golden Hook & transisi acak.
+                            </p>
+                        </button>
+
+                        <button type="button" id="btnModeDirectMerge" class="p-3 rounded-xl border border-slate-700 bg-argon-950/60 hover:border-slate-600 text-left transition flex flex-col justify-between gap-1 cursor-pointer">
+                            <div class="flex items-center justify-between w-full">
+                                <span class="text-xs font-extrabold text-slate-200">🔗 Hanya Gabung (Murni)</span>
+                                <span id="badgeModeDirect" class="px-1.5 py-0.5 rounded text-[9px] font-mono font-semibold bg-slate-800 text-slate-400">OFF</span>
+                            </div>
+                            <p class="text-[10px] text-slate-400 leading-snug">
+                                Tanpa auto-edit & tanpa potong scene. Hanya gabung video + MP3 sesuai durasi.
+                            </p>
+                        </button>
+                    </div>
+
+                    <!-- Info Banner saat Mode Hanya Gabung Aktif -->
+                    <div id="directMergeInfoBanner" class="hidden mt-2.5 p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-[11px] text-amber-200 leading-relaxed">
+                        <strong class="text-amber-300">Mode Hanya Gabung Aktif:</strong> Video tidak akan dipotong-potong atau diacak. Video diputar utuh dari awal hingga otomatis berhenti tepat saat suara Voice Over (.mp3) selesai.
+                    </div>
+                </div>
+
+                <!-- Aspect Ratio Selector (9:16 vs 16:9) -->
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-2">Resolusi & Orientasi Video:</label>
+                    <div class="grid grid-cols-2 gap-2.5">
+                        <button type="button" id="btnRatio916" data-ratio="9:16" class="ratio-btn p-3 rounded-xl border border-cyan-400 bg-cyan-500/15 text-left transition flex items-center gap-3 cursor-pointer">
+                            <div class="w-5 h-8 rounded border-2 border-cyan-300 bg-cyan-400/20 shrink-0"></div>
+                            <div>
+                                <div class="text-xs font-bold text-white">Vertikal 9:16</div>
+                                <div class="text-[10px] font-mono text-cyan-300">1080×1920 (Reels/TikTok)</div>
+                            </div>
+                        </button>
+                        <button type="button" id="btnRatio169" data-ratio="16:9" class="ratio-btn p-3 rounded-xl border border-slate-700 bg-argon-950/60 hover:border-slate-600 text-left transition flex items-center gap-3 cursor-pointer">
+                            <div class="w-8 h-5 rounded border-2 border-slate-400 bg-slate-700/40 shrink-0"></div>
+                            <div>
+                                <div class="text-xs font-bold text-slate-200">Landscape 16:9</div>
+                                <div class="text-[10px] font-mono text-slate-400">1920×1080 (YouTube)</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Parameter Khusus Auto-Edit (Otomatis diredupkan jika memilih Mode Hanya Gabung) -->
+                <div id="autoEditParametersWrap" class="flex flex-col gap-4 transition-opacity duration-200">
+                    <!-- Durasi Potongan per Scene (Pacing) -->
+                    <div>
+                        <div class="flex justify-between items-center mb-1.5">
+                            <label for="selectPacing" class="text-xs font-semibold text-slate-300">Durasi Potongan Scene (Micro-Cut Pacing):</label>
+                            <span class="text-[11px] font-mono text-cyan-400" id="pacingBadge">1.8 detik / klip</span>
+                        </div>
+                        <select id="selectPacing" class="w-full bg-argon-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-400">
+                            <option value="1.2">1.2 Detik — Ultra Cepat (High Dopamine)</option>
+                            <option value="1.5">1.5 Detik — Cepat & Dinamis (Shorts/TikTok)</option>
+                            <option value="1.8" selected>1.8 Detik — Ideal Seimbang (Rekomendasi Argon)</option>
+                            <option value="2.2">2.2 Detik — Sinematik Natural</option>
+                            <option value="2.5">2.5 Detik — Storytelling Tenang</option>
+                        </select>
+                    </div>
+
+                    <!-- Sensitivitas Filter Anti-Duplikat (pHash Hamming Distance) -->
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <label for="sliderDedup" class="text-xs font-semibold text-slate-300">Filter Anti-Duplikat (pHash 64-Bit):</label>
+                            <span id="dedupValueLabel" class="text-xs font-mono text-amber-400">Ambang: 10 bit</span>
+                        </div>
+                        <input id="sliderDedup" type="range" min="4" max="20" step="1" value="10" class="w-full h-1.5 bg-slate-800 rounded-lg cursor-pointer">
+                        <div class="flex justify-between text-[10px] text-slate-400 mt-1">
+                            <span>Ketat (Hanya identik)</span>
+                            <span>Agresif (Buang kemiripan)</span>
+                        </div>
+                    </div>
+
+                    <!-- Strategi Penyusunan Retensi -->
+                    <div>
+                        <label for="selectStrategy" class="block text-xs font-semibold text-slate-300 mb-1.5">Strategi Penyusunan Frame & Scene:</label>
+                        <select id="selectStrategy" class="w-full bg-argon-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-200 focus:outline-none focus:border-cyan-400">
+                            <option value="zigzag" selected>Golden Hook + Zig-Zag Pacing (Anti-Bosan Maksimal)</option>
+                            <option value="score_desc">Urutan Skor Retensi Tertinggi Murni</option>
+                        </select>
+                    </div>
+
+                    <!-- Pengaturan Efek Transisi Visual Acak & Sound Effects (SFX) -->
+                    <div class="pt-3 border-t border-slate-800/90 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                                Transisi Scene Acak & Audio SFX
+                            </span>
+                            <div class="flex items-center gap-1.5">
+                                <button type="button" id="btnTestSfx" class="px-2 py-1 rounded-lg text-[10px] font-mono font-semibold bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 transition cursor-pointer" title="Dengarkan sampel Sound Effect transisi">
+                                    🔊 Tes SFX
+                                </button>
+                                <button type="button" id="btnRandomizeTransitions" class="px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 transition cursor-pointer" title="Acak ulang seluruh efek transisi & SFX di timeline">
+                                    🎲 Acak Transisi
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                            <div>
+                                <label for="selectTransitionMode" class="block text-[11px] font-semibold text-slate-300 mb-1">Mode Transisi Visual:</label>
+                                <select id="selectTransitionMode" class="w-full bg-argon-950 border border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-400">
+                                    <option value="random_all" selected>Acak Semua (Unik Tiap Video)</option>
+                                    <option value="dynamic_only">Whip Pan, Slide & Zoom</option>
+                                    <option value="smooth_only">Halus (Dissolve, Iris & Flash)</option>
+                                    <option value="none">Tanpa Transisi (Hard Cut)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="selectTransitionDuration" class="block text-[11px] font-semibold text-slate-300 mb-1">Durasi Transisi:</label>
+                                <select id="selectTransitionDuration" class="w-full bg-argon-950 border border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-400">
+                                    <option value="0.22">0.22 Detik — Cepat & Snappy</option>
+                                    <option value="0.32" selected>0.32 Detik — Ideal Natural</option>
+                                    <option value="0.45">0.45 Detik — Sinematik Halus</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Sound Effect (SFX) Controls -->
+                        <div class="p-2.5 rounded-xl bg-argon-950/80 border border-slate-800 space-y-2">
+                            <div class="flex items-center justify-between">
+                                <label class="flex items-center gap-2 cursor-pointer">
+                                    <input type="checkbox" id="chkEnableSfx" checked class="rounded bg-argon-950 border-slate-700 text-amber-400 focus:ring-0">
+                                    <span class="text-xs font-semibold text-slate-200">Aktifkan Sound Effect (SFX) Transisi</span>
+                                </label>
+                                <span id="sfxVolumeLabel" class="text-[11px] font-mono text-amber-400">Vol SFX: 35%</span>
+                            </div>
+                            <input id="sliderSfxVolume" type="range" min="0" max="100" step="5" value="35" class="w-full h-1.5 bg-slate-800 rounded-lg cursor-pointer">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Original Video Audio (ON / OFF, Volume Mixer & Smart Auto-Ducking VO) - Selalu Aktif di Semua Mode -->
+                <div class="pt-2 border-t border-slate-800/90">
+                    <div class="p-3 rounded-xl bg-argon-950/90 border border-cyan-500/30 space-y-2.5">
+                        <div class="flex items-center justify-between gap-2">
+                            <div class="flex items-center gap-2">
+                                <svg class="w-4 h-4 text-cyan-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"/>
+                                </svg>
+                                <div>
+                                    <div class="text-xs font-bold text-slate-100">Audio Original Video (Suara Asli Klip)</div>
+                                    <div class="text-[10px] text-slate-400">Gabungkan suara asli bahan video dengan Voice Over</div>
+                                </div>
+                            </div>
+                            <button type="button" id="btnToggleOrigAudio" class="px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 transition flex items-center gap-1.5 cursor-pointer shrink-0">
+                                <span id="dotOrigAudioStatus" class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                                <span id="lblOrigAudioStatus">ON (AKTIF)</span>
+                            </button>
+                        </div>
+
+                        <div id="origAudioSliderWrap" class="space-y-2 pt-1 border-t border-slate-800/80">
+                            <div class="flex items-center justify-between text-[11px]">
+                                <span class="text-slate-400">Volume Suara Asli Video:</span>
+                                <span id="origAudioVolumeLabel" class="font-mono text-cyan-400 font-semibold">40%</span>
+                            </div>
+                            <input id="sliderOrigAudioVolume" type="range" min="0" max="100" step="5" value="40" class="w-full h-1.5 bg-slate-800 rounded-lg cursor-pointer">
+                            <label class="flex items-center justify-between gap-2 pt-1 cursor-pointer">
+                                <div class="flex items-center gap-2">
+                                    <input type="checkbox" id="chkAutoDucking" checked class="rounded bg-argon-950 border-slate-700 text-cyan-400 focus:ring-0">
+                                    <span class="text-[11px] font-medium text-slate-300">Smart Auto-Ducking VO (Redam saat VO bicara)</span>
+                                </div>
+                                <span class="px-1.5 py-0.5 rounded text-[9px] font-mono bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">AI Mix</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Argon Visual Enhancer (Clean Color Look) & Export Guarantee -->
+                <div class="pt-2 border-t border-slate-800/80 flex flex-col gap-2.5">
+                    <div class="flex items-center justify-between gap-2">
+                        <label for="selectColorLook" class="text-xs font-semibold text-slate-300">Argon Clean Color Look:</label>
+                        <select id="selectColorLook" class="bg-argon-950 border border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-cyan-300 font-medium focus:outline-none focus:border-cyan-400">
+                            <option value="clean_commercial" selected>Crisp Commercial Sharp (Default)</option>
+                            <option value="natural_orig">Original Natural (Tanpa Filter)</option>
+                            <option value="warm_studio">Warm Studio Glow</option>
+                            <option value="vivid_contrast">Vivid High-Contrast</option>
+                        </select>
+                    </div>
+                    <input type="checkbox" id="chkColorBoost" checked class="hidden">
+                    <label id="lblAutoReshuffleRender" class="flex items-center gap-2.5 cursor-pointer">
+                        <input type="checkbox" id="chkAutoReshuffleRender" checked class="rounded bg-argon-950 border-slate-700 text-cyan-400 focus:ring-0">
+                        <span class="text-xs text-slate-300">Acak variasi transisi otomatis setiap kali klik Render MP4</span>
+                    </label>
+                    <div class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/25 text-[11px] text-emerald-300 font-medium">
+                        <svg class="w-4 h-4 text-emerald-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        <span>Zero-Overlay 1080p: 100% Bersih Tanpa Teks/HUD di Video</span>
+                    </div>
+                </div>
+
+                <!-- Execute Argon Analysis / Direct Merge Button -->
+                <button id="btnRunArgon" class="w-full py-3.5 px-4 rounded-xl font-bold text-sm bg-gradient-to-r from-cyan-400 via-sky-500 to-blue-600 text-slate-950 hover:brightness-110 active:scale-[0.99] transition shadow-lg shadow-cyan-500/25 flex items-center justify-center gap-2 cursor-pointer">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                    </svg>
+                    <span id="btnRunArgonLabel">JALANKAN ANALISIS & AUTO-EDIT ARGON</span>
+                </button>
+            </div>
+
+            <!-- Card 3: Logika Algoritma & Bobot Penilaian -->
+            <div class="glass-panel rounded-2xl p-4 text-xs space-y-2.5">
+                <div class="font-bold text-slate-200 flex items-center justify-between">
+                    <span>Formula Retensi Visual Argon</span>
+                    <span class="font-mono text-[11px] text-cyan-400">Skala 0–100</span>
+                </div>
+                <div class="grid grid-cols-3 gap-2 text-center">
+                    <div class="p-2 rounded-lg bg-argon-950/80 border border-slate-800">
+                        <div class="text-cyan-400 font-mono font-bold text-sm">35%</div>
+                        <div class="text-[10px] text-slate-400">Ketajaman Fokus (Laplacian)</div>
+                    </div>
+                    <div class="p-2 rounded-lg bg-argon-950/80 border border-slate-800">
+                        <div class="text-emerald-400 font-mono font-bold text-sm">35%</div>
+                        <div class="text-[10px] text-slate-400">Gerakan Ideal (Sweet-Spot)</div>
+                    </div>
+                    <div class="p-2 rounded-lg bg-argon-950/80 border border-slate-800">
+                        <div class="text-amber-400 font-mono font-bold text-sm">30%</div>
+                        <div class="text-[10px] text-slate-400">Vibransi & Kontras</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RIGHT/CENTER COLUMN: Studio Preview Monitor, Render Controls & Interactive Timeline (8 cols) -->
+        <section class="lg:col-span-8 flex flex-col gap-5">
+
+            <!-- Top Row: Preview Monitor + Telemetry & Export Studio -->
+            <div class="glass-panel rounded-2xl p-5 grid grid-cols-1 xl:grid-cols-12 gap-6 items-center">
+
+                <!-- Canvas Preview Container (7 cols) -->
+                <div class="xl:col-span-7 flex flex-col items-center justify-center bg-argon-950 rounded-2xl p-4 border border-slate-800/90 min-h-[380px] relative">
+                    <div class="w-full flex items-center justify-between text-[11px] font-mono text-slate-400 mb-2 px-1">
+                        <span id="previewResolutionBadge" class="text-cyan-400 font-semibold">OUTPUT: 9:16 FULL HD (1080×1920 • CLEAN MP4)</span>
+                        <span id="previewTimecode">00:00.00 / 00:00.00</span>
+                    </div>
+
+                    <!-- Responsive Canvas Wrapper (True 1080p Internal Buffer, Pure Visual Frame) -->
+                    <div id="canvasStage" class="relative flex items-center justify-center w-full h-[340px] overflow-hidden">
+                        <canvas id="mainPreviewCanvas" width="1080" height="1920" class="max-h-full max-w-full object-contain rounded-xl border border-slate-700/80 shadow-2xl bg-black"></canvas>
+                    </div>
+
+                    <!-- External UI Telemetry Bar (Strictly outside canvas so video remains 100% clean) -->
+                    <div id="externalTelemetryBar" class="w-full mt-2.5 px-3 py-1.5 rounded-lg bg-argon-900/90 border border-slate-800 flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono">
+                        <span id="telemetryClipBadge" class="text-cyan-300 font-semibold">CLEAN 1080p BUFFER READY</span>
+                        <span id="telemetryTransitionBadge" class="text-amber-300 font-medium">Transisi: --</span>
+                        <span id="telemetryMetricsText" class="text-slate-400">Tajam: -- | Gerak: -- | Warna: --</span>
+                    </div>
+
+                    <!-- Playback Scrubber & Controls -->
+                    <div class="w-full mt-3 space-y-2">
+                        <input id="timelineScrubber" type="range" min="0" max="100" step="0.01" value="0" class="w-full h-1.5 bg-slate-800 rounded-lg cursor-pointer" disabled>
+                        <div class="flex items-center justify-between gap-2">
+                            <div class="flex items-center gap-2">
+                                <button id="btnPlayPause" disabled class="px-3.5 py-1.5 rounded-lg bg-cyan-500 hover:bg-cyan-400 disabled:opacity-40 text-slate-950 font-bold text-xs transition flex items-center gap-1.5 cursor-pointer">
+                                    <svg id="iconPlay" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
+                                    </svg>
+                                    <span id="playBtnText">Putar Preview</span>
+                                </button>
+                                <button id="btnStopPreview" disabled class="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-40 text-slate-300 text-xs font-semibold transition cursor-pointer">
+                                    Reset Awal
+                                </button>
+                            </div>
+                            <div id="activeSegmentIndicator" class="text-[11px] font-mono text-amber-300 truncate">
+                                Menunggu analisis...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side of Monitor: Real-Time Telemetry, Stats & Render Export (5 cols) -->
+                <div class="xl:col-span-5 flex flex-col justify-between h-full gap-4">
+                    <div class="space-y-3">
+                        <h3 class="text-sm font-bold uppercase tracking-wider text-slate-200 flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+                            Ringkasan Eksekusi Argon
+                        </h3>
+
+                        <!-- 4 Metric Boxes -->
+                        <div class="grid grid-cols-2 gap-2.5">
+                            <div class="p-3 rounded-xl bg-argon-950/90 border border-slate-800">
+                                <div class="text-[10px] font-mono uppercase text-slate-400">Durasi Voice Over</div>
+                                <div id="statVoDuration" class="text-base font-mono font-bold text-amber-400 mt-0.5">0.00 dtk</div>
+                                <div class="text-[10px] text-slate-400">Auto-Cut Presisi</div>
+                            </div>
+                            <div class="p-3 rounded-xl bg-argon-950/90 border border-slate-800">
+                                <div class="text-[10px] font-mono uppercase text-slate-400">Skor Golden Hook</div>
+                                <div id="statGoldenHook" class="text-base font-mono font-bold text-emerald-400 mt-0.5">-- / 100</div>
+                                <div class="text-[10px] text-slate-400">Klip Pembuka (0.0s)</div>
+                            </div>
+                            <div class="p-3 rounded-xl bg-argon-950/90 border border-slate-800">
+                                <div class="text-[10px] font-mono uppercase text-slate-400">Scene Terpilih</div>
+                                <div id="statAcceptedCount" class="text-base font-mono font-bold text-cyan-400 mt-0.5">0 Klip</div>
+                                <div class="text-[10px] text-slate-400">Lolos Seleksi</div>
+                            </div>
+                            <div class="p-3 rounded-xl bg-argon-950/90 border border-slate-800">
+                                <div class="text-[10px] font-mono uppercase text-slate-400">Duplikat Dibuang</div>
+                                <div id="statRejectedCount" class="text-base font-mono font-bold text-rose-400 mt-0.5">0 Klip</div>
+                                <div class="text-[10px] text-slate-400">Filter pHash 64-Bit</div>
+                            </div>
+                        </div>
+
+                        <!-- Progress Bar for Scanning / Rendering -->
+                        <div class="p-3.5 rounded-xl bg-argon-950 border border-slate-800 space-y-2">
+                            <div class="flex justify-between text-xs">
+                                <span id="progressTaskLabel" class="font-semibold text-slate-300">Status Proses: Idle</span>
+                                <span id="progressPercentLabel" class="font-mono text-cyan-400">0%</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+                                <div id="progressBarFill" class="h-full bg-gradient-to-r from-cyan-400 to-emerald-400 transition-all duration-200" style="width: 0%"></div>
+                            </div>
+                            <p id="consoleLatestLine" class="text-[11px] font-mono text-slate-400 truncate">
+                                Klik "Muat Sampel Demo Otomatis" atau unggah file Anda.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Render & Download Box -->
+                    <div class="p-4 rounded-2xl bg-gradient-to-br from-emerald-950/60 via-argon-900 to-argon-950 border border-emerald-500/30 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-emerald-300 uppercase tracking-wider">Render MP4 1080p + Audio MP3</span>
+                            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">Clean 1080p • Tanpa Overlay</span>
+                        </div>
+                        <p class="text-[11px] text-slate-300 leading-relaxed">
+                            Merender video resolusi penuh Full HD 1080p (12 Mbps) murni tanpa teks/overlay apapun dan memotong otomatis tepat saat suara Voice Over selesai.
+                        </p>
+                        <button id="btnRenderFinal" disabled class="w-full py-3 px-4 rounded-xl font-bold text-xs uppercase tracking-wider bg-emerald-500 hover:bg-emerald-400 disabled:opacity-40 text-slate-950 transition shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 cursor-pointer">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                            </svg>
+                            <span>Render & Download Video MP4 1080p</span>
+                        </button>
+
+                        <!-- Download Link Container (Appears after render) -->
+                        <div id="downloadResultBox" class="hidden pt-2 border-t border-emerald-500/20">
+                            <a id="downloadVideoLink" href="#" download="Argon_1080p_9x16_Clean.mp4" class="w-full py-2.5 px-3 rounded-xl font-bold text-xs bg-cyan-400 hover:bg-cyan-300 text-slate-950 flex items-center justify-center gap-2 transition shadow-md">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                                </svg>
+                                <span id="downloadBtnLabel">Unduh File Video MP4 1080p</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Row: Interactive Argon Retention Timeline & Duplicate Filter Inspector -->
+            <div class="glass-panel rounded-2xl p-5 flex flex-col gap-4">
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-3">
+                    <div class="flex items-center gap-2">
+                        <button id="tabBtnTimeline" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 cursor-pointer">
+                            Timeline Retensi Terpilih (<span id="countTimelineBadge">0</span>)
+                        </button>
+                        <button id="tabBtnRejected" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-argon-950 text-slate-400 hover:text-slate-200 border border-slate-800 cursor-pointer">
+                            Segmen Duplikat / Dibuang (<span id="countRejectedBadge">0</span>)
+                        </button>
+                        <button id="tabBtnLogs" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-argon-950 text-slate-400 hover:text-slate-200 border border-slate-800 cursor-pointer">
+                            Log Telemetri Visi Komputer
+                        </button>
+                    </div>
+                    <div class="text-[11px] font-mono text-slate-400">
+                        Klik kartu klip untuk lompat preview • Gunakan tombol <span class="text-cyan-300">← / →</span> untuk memindah posisi scene
+                    </div>
+                </div>
+
+                <!-- View 1: Accepted Timeline Cards -->
+                <div id="viewTimelineContainer" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3.5 max-h-[420px] overflow-y-auto pr-1">
+                    <div class="col-span-full py-12 text-center text-slate-400 text-xs">
+                        Belum ada timeline yang disusun. Klik <strong class="text-indigo-300">"Muat Sampel Demo Otomatis"</strong> di kanan atas atau unggah video & MP3 Anda lalu klik <strong class="text-cyan-300">"Jalankan Analisis & Auto-Edit Argon"</strong>.
+                    </div>
+                </div>
+
+                <!-- View 2: Rejected / Duplicate Segments -->
+                <div id="viewRejectedContainer" class="hidden grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3.5 max-h-[420px] overflow-y-auto pr-1"></div>
+
+                <!-- View 3: Detailed Computer Vision Logs -->
+                <div id="viewLogsContainer" class="hidden bg-argon-950 border border-slate-800 rounded-xl p-3.5 font-mono text-xs text-slate-300 h-[320px] overflow-y-auto space-y-1"></div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Offscreen Analysis Canvas (Hidden) -->
+    <canvas id="cvAnalysisCanvas" width="160" height="160" class="hidden"></canvas>
+
+    <script>
+        /***********************************************************************
+         * ARGON AUTO-EDITOR WEB STUDIO — CORE COMPUTER VISION, DUAL-DECODER & SFX ENGINE
+         ***********************************************************************/
+        const TRANSITION_CATALOG = [
+            { id: 'whip_left', name: 'Whip Pan Left', category: 'dynamic', sfxId: 'whoosh_air', sfxName: 'Air Whoosh' },
+            { id: 'whip_right', name: 'Whip Pan Right', category: 'dynamic', sfxId: 'whoosh_air', sfxName: 'Air Whoosh' },
+            { id: 'zoom_punch', name: 'Zoom Punch-In', category: 'dynamic', sfxId: 'bass_punch', sfxName: 'Sub Bass Punch' },
+            { id: 'slide_up', name: 'Slide Push Up', category: 'dynamic', sfxId: 'swoop_swish', sfxName: 'Deep Swish' },
+            { id: 'slide_down', name: 'Slide Push Down', category: 'dynamic', sfxId: 'swoop_swish', sfxName: 'Deep Swish' },
+            { id: 'flash_dip', name: 'Flash Dip Glow', category: 'smooth', sfxId: 'shutter_flash', sfxName: 'Crisp Flash Pop' },
+            { id: 'circle_iris', name: 'Circle Iris Reveal', category: 'smooth', sfxId: 'harmonic_shimmer', sfxName: 'Warm Shimmer' },
+            { id: 'cross_dissolve', name: 'Cross Dissolve', category: 'smooth', sfxId: 'harmonic_shimmer', sfxName: 'Warm Shimmer' }
+        ];
+
+        const COLOR_LOOK_FILTERS = {
+            clean_commercial: 'contrast(1.08) saturate(1.14) brightness(1.02)',
+            natural_orig: 'none',
+            warm_studio: 'contrast(1.06) saturate(1.18) sepia(0.08) brightness(1.03)',
+            vivid_contrast: 'contrast(1.15) saturate(1.26) brightness(1.01)'
+        };
+
+        const state = {
+            videoFiles: [],          // Array of { file, name, url, duration, videoEl, videoElSecondary, audioBuffer, hasAudio }
+            audioFile: null,         // { file, name, url, duration, audioBuffer, voiceEnvelope }
+            processingMode: 'auto_edit', // 'auto_edit' | 'direct_merge'
+            aspectRatio: '9:16',     // '9:16' or '16:9'
+            pacingSec: 1.8,          // Target clip slice length
+            dedupThreshold: 10,      // Hamming distance threshold (0..64)
+            strategy: 'zigzag',      // 'zigzag' | 'score_desc'
+            transitionMode: 'random_all', // 'random_all' | 'dynamic_only' | 'smooth_only' | 'none'
+            transitionDuration: 0.32,// Duration in seconds for visual transitions
+            enableSfx: true,         // Synthesize transition SFX in Web Audio API
+            sfxVolume: 0.35,         // 0.0 .. 1.0
+            enableOrigAudio: true,   // Global ON/OFF for Original Video Audio
+            origAudioVolume: 0.40,   // 0.0 .. 1.0 volume for Original Video Audio
+            autoDucking: true,       // Smart Auto-Ducking VO when voice over speaks
+            colorLook: 'clean_commercial', // Clean Color Look filter preset
+            rerollCount: 0,          // Counter for 1-click variation seed
+            origAudioMasterGain: null, // Live GainNode for instant ON/OFF & volume control
+            timeline: [],            // Final sequenced VideoSegment objects
+            uniquePoolCache: [],     // Cached deduplicated segments for instant 1-click re-rolling
+            rejectedSegments: [],    // Duplicate or low-value rejected segments
+            allCandidates: [],       // All analyzed slices
+            isPlaying: false,
+            isRendering: false,
+            playbackSessionId: 0,    // Session token to prevent double-audio race conditions
+            currentPlayTime: 0,
+            animationFrameId: null,
+            audioCtx: null,
+            activeAudioSource: null,
+            scheduledSfxNodes: [],
+            scheduledOrigAudioNodes: [],
+            playStartWallTime: 0,
+            playStartOffset: 0
+        };
+
+        // Offscreen 1080p Transition Compositing Buffers (Zero-Overlay Clean Buffers)
+        const outgoingBufferCanvas = document.createElement('canvas');
+        outgoingBufferCanvas.width = 1080;
+        outgoingBufferCanvas.height = 1920;
+        const outgoingBufferCtx = outgoingBufferCanvas.getContext('2d');
+
+        const incomingBufferCanvas = document.createElement('canvas');
+        incomingBufferCanvas.width = 1080;
+        incomingBufferCanvas.height = 1920;
+        const incomingBufferCtx = incomingBufferCanvas.getContext('2d');
+
+        // DOM Elements
+        const els = {
+            btnRerollSequence: document.getElementById('btnRerollSequence'),
+            btnLoadDemo: document.getElementById('btnLoadDemo'),
+            statusDot: document.getElementById('statusDot'),
+            statusText: document.getElementById('statusText'),
+            totalMediaCounter: document.getElementById('totalMediaCounter'),
+            inputVideos: document.getElementById('inputVideos'),
+            videoFilesList: document.getElementById('videoFilesList'),
+            inputAudio: document.getElementById('inputAudio'),
+            audioFileName: document.getElementById('audioFileName'),
+            audioDurationLabel: document.getElementById('audioDurationLabel'),
+            modeActivePill: document.getElementById('modeActivePill'),
+            btnModeAutoEdit: document.getElementById('btnModeAutoEdit'),
+            btnModeDirectMerge: document.getElementById('btnModeDirectMerge'),
+            badgeModeAuto: document.getElementById('badgeModeAuto'),
+            badgeModeDirect: document.getElementById('badgeModeDirect'),
+            directMergeInfoBanner: document.getElementById('directMergeInfoBanner'),
+            autoEditParametersWrap: document.getElementById('autoEditParametersWrap'),
+            lblAutoReshuffleRender: document.getElementById('lblAutoReshuffleRender'),
+            btnRunArgonLabel: document.getElementById('btnRunArgonLabel'),
+            btnRatio916: document.getElementById('btnRatio916'),
+            btnRatio169: document.getElementById('btnRatio169'),
+            selectPacing: document.getElementById('selectPacing'),
+            pacingBadge: document.getElementById('pacingBadge'),
+            sliderDedup: document.getElementById('sliderDedup'),
+            dedupValueLabel: document.getElementById('dedupValueLabel'),
+            selectStrategy: document.getElementById('selectStrategy'),
+            selectTransitionMode: document.getElementById('selectTransitionMode'),
+            selectTransitionDuration: document.getElementById('selectTransitionDuration'),
+            chkEnableSfx: document.getElementById('chkEnableSfx'),
+            sliderSfxVolume: document.getElementById('sliderSfxVolume'),
+            sfxVolumeLabel: document.getElementById('sfxVolumeLabel'),
+            btnToggleOrigAudio: document.getElementById('btnToggleOrigAudio'),
+            dotOrigAudioStatus: document.getElementById('dotOrigAudioStatus'),
+            lblOrigAudioStatus: document.getElementById('lblOrigAudioStatus'),
+            origAudioSliderWrap: document.getElementById('origAudioSliderWrap'),
+            sliderOrigAudioVolume: document.getElementById('sliderOrigAudioVolume'),
+            origAudioVolumeLabel: document.getElementById('origAudioVolumeLabel'),
+            chkAutoDucking: document.getElementById('chkAutoDucking'),
+            selectColorLook: document.getElementById('selectColorLook'),
+            btnTestSfx: document.getElementById('btnTestSfx'),
+            btnRandomizeTransitions: document.getElementById('btnRandomizeTransitions'),
+            chkColorBoost: document.getElementById('chkColorBoost'),
+            chkAutoReshuffleRender: document.getElementById('chkAutoReshuffleRender'),
+            btnRunArgon: document.getElementById('btnRunArgon'),
+            previewResolutionBadge: document.getElementById('previewResolutionBadge'),
+            previewTimecode: document.getElementById('previewTimecode'),
+            mainPreviewCanvas: document.getElementById('mainPreviewCanvas'),
+            telemetryClipBadge: document.getElementById('telemetryClipBadge'),
+            telemetryTransitionBadge: document.getElementById('telemetryTransitionBadge'),
+            telemetryMetricsText: document.getElementById('telemetryMetricsText'),
+            timelineScrubber: document.getElementById('timelineScrubber'),
+            btnPlayPause: document.getElementById('btnPlayPause'),
+            playBtnText: document.getElementById('playBtnText'),
+            btnStopPreview: document.getElementById('btnStopPreview'),
+            activeSegmentIndicator: document.getElementById('activeSegmentIndicator'),
+            statVoDuration: document.getElementById('statVoDuration'),
+            statGoldenHook: document.getElementById('statGoldenHook'),
+            statAcceptedCount: document.getElementById('statAcceptedCount'),
+            statRejectedCount: document.getElementById('statRejectedCount'),
+            progressTaskLabel: document.getElementById('progressTaskLabel'),
+            progressPercentLabel: document.getElementById('progressPercentLabel'),
+            progressBarFill: document.getElementById('progressBarFill'),
+            consoleLatestLine: document.getElementById('consoleLatestLine'),
+            btnRenderFinal: document.getElementById('btnRenderFinal'),
+            downloadResultBox: document.getElementById('downloadResultBox'),
+            downloadVideoLink: document.getElementById('downloadVideoLink'),
+            downloadBtnLabel: document.getElementById('downloadBtnLabel'),
+            tabBtnTimeline: document.getElementById('tabBtnTimeline'),
+            tabBtnRejected: document.getElementById('tabBtnRejected'),
+            tabBtnLogs: document.getElementById('tabBtnLogs'),
+            countTimelineBadge: document.getElementById('countTimelineBadge'),
+            countRejectedBadge: document.getElementById('countRejectedBadge'),
+            viewTimelineContainer: document.getElementById('viewTimelineContainer'),
+            viewRejectedContainer: document.getElementById('viewRejectedContainer'),
+            viewLogsContainer: document.getElementById('viewLogsContainer'),
+            cvAnalysisCanvas: document.getElementById('cvAnalysisCanvas')
+        };
+
+        // Helper Logger
+        function logMessage(msg, type = 'info') {
+            const timeStr = new Date().toLocaleTimeString('id-ID', { hour12: false });
+            els.consoleLatestLine.textContent = `[${timeStr}] ${msg}`;
+            const line = document.createElement('div');
+            const colorClass = type === 'success' ? 'text-emerald-400' : type === 'warn' ? 'text-amber-400' : type === 'error' ? 'text-rose-400' : 'text-slate-300';
+            line.className = `${colorClass} leading-relaxed`;
+            line.textContent = `[${timeStr}] ${msg}`;
+            els.viewLogsContainer.appendChild(line);
+            els.viewLogsContainer.scrollTop = els.viewLogsContainer.scrollHeight;
+        }
+
+        function setProgress(percent, label) {
+            const clamped = Math.max(0, Math.min(100, Math.round(percent)));
+            els.progressBarFill.style.width = `${clamped}%`;
+            els.progressPercentLabel.textContent = `${clamped}%`;
+            if (label) els.progressTaskLabel.textContent = label;
+        }
+
+        function updateMediaCounters() {
+            els.totalMediaCounter.textContent = `${state.videoFiles.length} Video • ${state.audioFile ? '1' : '0'} Audio`;
+        }
+
+        function getAudioContext() {
+            if (!state.audioCtx) {
+                const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                state.audioCtx = new AudioCtx();
+            }
+            if (state.audioCtx.state === 'suspended') {
+                state.audioCtx.resume().catch(() => {});
+            }
+            return state.audioCtx;
+        }
+
+        /**
+         * Mengambil durasi efektif target video:
+         * Mengikuti durasi presisi Voice Over (.mp3/.wav) jika tersedia,
+         * atau fallback otomatis ke total durasi bahan video jika pengguna belum mengunggah MP3.
+         */
+        function getEffectiveTargetDuration() {
+            if (state.audioFile && state.audioFile.duration > 0.1) {
+                return state.audioFile.duration;
+            }
+            if (state.videoFiles.length > 0) {
+                const sumVid = state.videoFiles.reduce((acc, v) => acc + (v.duration || 0), 0);
+                return Math.max(2.0, Math.min(30.0, Number(sumVid.toFixed(3))));
+            }
+            return 8.0;
+        }
+
+        /**
+         * Mengekstrak amplop energi suara Voice Over (per 50ms) untuk fitur Smart Auto-Ducking VO
+         */
+        function computeVoiceActivityEnvelope(audioBuffer, stepSec = 0.05) {
+            if (!audioBuffer) return [];
+            const sr = audioBuffer.sampleRate;
+            const chData = audioBuffer.getChannelData(0);
+            const stepSamples = Math.max(1, Math.floor(sr * stepSec));
+            const envelope = [];
+            for (let offset = 0; offset < chData.length; offset += stepSamples) {
+                let sumSq = 0;
+                const end = Math.min(chData.length, offset + stepSamples);
+                for (let i = offset; i < end; i++) {
+                    sumSq += chData[i] * chData[i];
+                }
+                const rms = Math.sqrt(sumSq / Math.max(1, end - offset));
+                envelope.push(rms);
+            }
+            return envelope;
+        }
+
+        /***********************************************************************
+         * 1. ASPECT RATIO, TRANSITION & SFX PARAMETER BINDINGS (NATIVE 1080p)
+         ***********************************************************************/
+        function syncOffscreenBufferSizes(w, h) {
+            outgoingBufferCanvas.width = w;
+            outgoingBufferCanvas.height = h;
+            incomingBufferCanvas.width = w;
+            incomingBufferCanvas.height = h;
+        }
+
+        function setAspectRatio(ratio) {
+            state.aspectRatio = ratio;
+            if (ratio === '9:16') {
+                els.btnRatio916.className = 'ratio-btn p-3 rounded-xl border border-cyan-400 bg-cyan-500/15 text-left transition flex items-center gap-3 cursor-pointer';
+                els.btnRatio169.className = 'ratio-btn p-3 rounded-xl border border-slate-700 bg-argon-950/60 hover:border-slate-600 text-left transition flex items-center gap-3 cursor-pointer';
+                els.mainPreviewCanvas.width = 1080;
+                els.mainPreviewCanvas.height = 1920;
+                syncOffscreenBufferSizes(1080, 1920);
+                els.previewResolutionBadge.textContent = 'OUTPUT: 9:16 FULL HD (1080×1920 • CLEAN MP4)';
+            } else {
+                els.btnRatio169.className = 'ratio-btn p-3 rounded-xl border border-cyan-400 bg-cyan-500/15 text-left transition flex items-center gap-3 cursor-pointer';
+                els.btnRatio916.className = 'ratio-btn p-3 rounded-xl border border-slate-700 bg-argon-950/60 hover:border-slate-600 text-left transition flex items-center gap-3 cursor-pointer';
+                els.mainPreviewCanvas.width = 1920;
+                els.mainPreviewCanvas.height = 1080;
+                syncOffscreenBufferSizes(1920, 1080);
+                els.previewResolutionBadge.textContent = 'OUTPUT: 16:9 FULL HD (1920×1080 • CLEAN MP4)';
+            }
+            renderCurrentPreviewFrame(state.currentPlayTime);
+        }
+
+        els.btnRatio916.addEventListener('click', () => setAspectRatio('9:16'));
+        els.btnRatio169.addEventListener('click', () => setAspectRatio('16:9'));
+
+        /**
+         * Mengatur Mode Pemrosesan:
+         * - 'auto_edit': Argon Auto-Edit (Smart Cut, pHash Anti-Duplikat, Golden Hook & Transisi Acak)
+         * - 'direct_merge': Hanya Gabung Video & Audio (Tanpa Auto-Edit, urutan utuh & potong tepat sesuai durasi MP3)
+         */
+        async function setProcessingMode(mode) {
+            state.processingMode = mode;
+
+            if (mode === 'auto_edit') {
+                els.btnModeAutoEdit.className = 'p-3 rounded-xl border border-cyan-400 bg-cyan-500/15 text-left transition flex flex-col justify-between gap-1 cursor-pointer';
+                els.badgeModeAuto.className = 'px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-cyan-400 text-slate-950';
+                els.badgeModeAuto.textContent = 'AKTIF';
+
+                els.btnModeDirectMerge.className = 'p-3 rounded-xl border border-slate-700 bg-argon-950/60 hover:border-slate-600 text-left transition flex flex-col justify-between gap-1 cursor-pointer';
+                els.badgeModeDirect.className = 'px-1.5 py-0.5 rounded text-[9px] font-mono font-semibold bg-slate-800 text-slate-400';
+                els.badgeModeDirect.textContent = 'OFF';
+
+                els.modeActivePill.textContent = 'Auto-Edit Aktif';
+                els.modeActivePill.className = 'text-[11px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20';
+
+                els.directMergeInfoBanner.classList.add('hidden');
+                els.autoEditParametersWrap.classList.remove('opacity-40', 'pointer-events-none');
+                els.lblAutoReshuffleRender.classList.remove('opacity-40', 'pointer-events-none');
+                els.btnRunArgonLabel.textContent = 'JALANKAN ANALISIS & AUTO-EDIT ARGON';
+
+                logMessage('Mode diubah ke: Argon Auto-Edit (Pemotongan Scene Otomatis, Anti-Duplikat & Transisi Acak).', 'info');
+            } else {
+                els.btnModeDirectMerge.className = 'p-3 rounded-xl border border-amber-400 bg-amber-500/15 text-left transition flex flex-col justify-between gap-1 cursor-pointer';
+                els.badgeModeDirect.className = 'px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-amber-400 text-slate-950';
+                els.badgeModeDirect.textContent = 'AKTIF';
+
+                els.btnModeAutoEdit.className = 'p-3 rounded-xl border border-slate-700 bg-argon-950/60 hover:border-slate-600 text-left transition flex flex-col justify-between gap-1 cursor-pointer';
+                els.badgeModeAuto.className = 'px-1.5 py-0.5 rounded text-[9px] font-mono font-semibold bg-slate-800 text-slate-400';
+                els.badgeModeAuto.textContent = 'OFF';
+
+                els.modeActivePill.textContent = 'Hanya Gabung (Tanpa Edit)';
+                els.modeActivePill.className = 'text-[11px] font-mono text-amber-300 bg-amber-500/15 px-2 py-0.5 rounded border border-amber-500/30';
+
+                els.directMergeInfoBanner.classList.remove('hidden');
+                els.autoEditParametersWrap.classList.add('opacity-40', 'pointer-events-none');
+                els.lblAutoReshuffleRender.classList.add('opacity-40', 'pointer-events-none');
+                els.btnRunArgonLabel.textContent = 'GABUNGKAN VIDEO & AUDIO (TANPA AUTO-EDIT)';
+
+                logMessage('Mode diubah ke: Hanya Gabung Video & Audio (Tanpa Auto-Edit, Video Utuh Dipotong Sesuai Durasi MP3).', 'warn');
+            }
+
+            // Jika bahan video sudah tersedia, langsung terapkan pembaruan timeline secara otomatis
+            if (state.videoFiles.length > 0 && !state.isRendering) {
+                await executeSelectedPipeline();
+            }
+        }
+
+        els.btnModeAutoEdit.addEventListener('click', () => setProcessingMode('auto_edit'));
+        els.btnModeDirectMerge.addEventListener('click', () => setProcessingMode('direct_merge'));
+
+        els.selectPacing.addEventListener('change', (e) => {
+            state.pacingSec = parseFloat(e.target.value);
+            els.pacingBadge.textContent = `${state.pacingSec.toFixed(1)} detik / klip`;
+        });
+
+        els.sliderDedup.addEventListener('input', (e) => {
+            state.dedupThreshold = parseInt(e.target.value, 10);
+            els.dedupValueLabel.textContent = `Ambang: ${state.dedupThreshold} bit`;
+        });
+
+        els.selectStrategy.addEventListener('change', (e) => {
+            state.strategy = e.target.value;
+        });
+
+        els.selectTransitionMode.addEventListener('change', (e) => {
+            state.transitionMode = e.target.value;
+            if (state.timeline.length > 0) {
+                randomizeTimelineTransitions();
+                renderTimelineCardsUI();
+                seekAndRenderPreviewAtTime(state.currentPlayTime);
+            }
+        });
+
+        els.selectTransitionDuration.addEventListener('change', (e) => {
+            state.transitionDuration = parseFloat(e.target.value);
+            seekAndRenderPreviewAtTime(state.currentPlayTime);
+        });
+
+        els.chkEnableSfx.addEventListener('change', (e) => {
+            state.enableSfx = e.target.checked;
+        });
+
+        els.sliderSfxVolume.addEventListener('input', (e) => {
+            const pct = parseInt(e.target.value, 10);
+            state.sfxVolume = pct / 100;
+            els.sfxVolumeLabel.textContent = `Vol SFX: ${pct}%`;
+        });
+
+        function updateOrigAudioUIAndGain() {
+            if (state.enableOrigAudio) {
+                els.btnToggleOrigAudio.className = 'px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 transition flex items-center gap-1.5 cursor-pointer shrink-0';
+                els.dotOrigAudioStatus.className = 'w-2 h-2 rounded-full bg-emerald-400';
+                els.lblOrigAudioStatus.textContent = 'ON (AKTIF)';
+                els.origAudioSliderWrap.classList.remove('opacity-40');
+                els.sliderOrigAudioVolume.disabled = false;
+            } else {
+                els.btnToggleOrigAudio.className = 'px-2.5 py-1 rounded-lg text-[10px] font-mono font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40 transition flex items-center gap-1.5 cursor-pointer shrink-0';
+                els.dotOrigAudioStatus.className = 'w-2 h-2 rounded-full bg-rose-400';
+                els.lblOrigAudioStatus.textContent = 'OFF (MUTE)';
+                els.origAudioSliderWrap.classList.add('opacity-40');
+                els.sliderOrigAudioVolume.disabled = true;
+            }
+
+            if (state.origAudioMasterGain && state.audioCtx) {
+                const targetGain = state.enableOrigAudio ? state.origAudioVolume : 0;
+                state.origAudioMasterGain.gain.setTargetAtTime(targetGain, state.audioCtx.currentTime, 0.02);
+            }
+        }
+
+        els.btnToggleOrigAudio.addEventListener('click', () => {
+            state.enableOrigAudio = !state.enableOrigAudio;
+            updateOrigAudioUIAndGain();
+            renderTimelineCardsUI();
+            logMessage(
+                `Audio Original Video (Suara Asli Klip) diatur ke: ${state.enableOrigAudio ? `ON (Volume ${Math.round(state.origAudioVolume * 100)}%)` : 'OFF (Dibisukan)'}`,
+                state.enableOrigAudio ? 'info' : 'warn'
+            );
+        });
+
+        els.sliderOrigAudioVolume.addEventListener('input', (e) => {
+            const pct = parseInt(e.target.value, 10);
+            state.origAudioVolume = pct / 100;
+            els.origAudioVolumeLabel.textContent = `${pct}%`;
+            if (pct === 0 && state.enableOrigAudio) {
+                state.enableOrigAudio = false;
+                updateOrigAudioUIAndGain();
+                renderTimelineCardsUI();
+            } else if (pct > 0 && !state.enableOrigAudio) {
+                state.enableOrigAudio = true;
+                updateOrigAudioUIAndGain();
+                renderTimelineCardsUI();
+            } else if (state.origAudioMasterGain && state.audioCtx) {
+                state.origAudioMasterGain.gain.setTargetAtTime(state.origAudioVolume, state.audioCtx.currentTime, 0.02);
+            }
+        });
+
+        /**
+         * Mengacak penugasan efek transisi visual & pasangan SFX untuk setiap perpindahan scene di timeline
+         * Menjamin dua perpindahan berturut-turut tidak memakai efek yang sama.
+         */
+        function randomizeTimelineTransitions() {
+            if (!state.timeline.length) return;
+
+            let pool = [...TRANSITION_CATALOG];
+            if (state.transitionMode === 'dynamic_only') {
+                pool = TRANSITION_CATALOG.filter(t => t.category === 'dynamic');
+            } else if (state.transitionMode === 'smooth_only') {
+                pool = TRANSITION_CATALOG.filter(t => t.category === 'smooth');
+            }
+
+            let prevId = null;
+            state.timeline.forEach((seg, idx) => {
+                if (idx === 0 || state.transitionMode === 'none' || seg.isDirectMerge) {
+                    seg.transition = { id: 'none', name: 'Opening Hook (Cut)', sfxId: 'none', sfxName: 'Tanpa SFX' };
+                } else {
+                    const candidates = pool.filter(t => t.id !== prevId);
+                    const pickPool = candidates.length > 0 ? candidates : pool;
+                    const chosen = pickPool[Math.floor(Math.random() * pickPool.length)];
+                    seg.transition = { ...chosen };
+                    prevId = chosen.id;
+                }
+            });
+        }
+
+        els.btnRandomizeTransitions.addEventListener('click', () => {
+            if (!state.timeline.length) {
+                logMessage('Muat sampel demo atau jalankan analisis terlebih dahulu sebelum mengacak transisi.', 'warn');
+                return;
+            }
+            if (state.transitionMode === 'none') {
+                els.selectTransitionMode.value = 'random_all';
+                state.transitionMode = 'random_all';
+            }
+            randomizeTimelineTransitions();
+            renderTimelineCardsUI();
+            logMessage('Seluruh efek transisi visual & SFX antar-scene berhasil diacak ulang!', 'success');
+        });
+
+        els.btnTestSfx.addEventListener('click', () => {
+            const samplePool = TRANSITION_CATALOG;
+            const randomSample = samplePool[Math.floor(Math.random() * samplePool.length)];
+            triggerProceduralTransitionSfx(randomSample.sfxId, null, 0);
+            logMessage(`Memutar sampel Sound Effect transisi: ${randomSample.sfxName} (${randomSample.name})`, 'info');
+        });
+
+        if (els.chkAutoDucking) {
+            els.chkAutoDucking.addEventListener('change', (e) => {
+                state.autoDucking = e.target.checked;
+                logMessage(`Smart Auto-Ducking VO: ${state.autoDucking ? 'AKTIF (Suara asli video diredam halus saat VO berbicara)' : 'NONAKTIF'}`, 'info');
+            });
+        }
+
+        if (els.selectColorLook) {
+            els.selectColorLook.addEventListener('change', (e) => {
+                state.colorLook = e.target.value;
+                renderCurrentPreviewFrame(state.currentPlayTime);
+                logMessage(`Argon Clean Color Look diubah ke: ${e.target.options[e.target.selectedIndex].text}`, 'info');
+            });
+        }
+
+        if (els.btnRerollSequence) {
+            els.btnRerollSequence.addEventListener('click', async () => {
+                if (!state.timeline.length) {
+                    logMessage('Muat sampel demo atau unggah video terlebih dahulu sebelum membuat variasi urutan baru.', 'warn');
+                    return;
+                }
+                stopPreviewPlayback();
+                state.rerollCount++;
+                const targetDur = getEffectiveTargetDuration();
+
+                if (state.processingMode === 'direct_merge') {
+                    // Rotasi urutan file video pada mode Hanya Gabung
+                    if (state.videoFiles.length > 1) {
+                        const firstVid = state.videoFiles.shift();
+                        state.videoFiles.push(firstVid);
+                        renderVideoFilesList();
+                    }
+                    await runDirectMergePipeline();
+                } else if (state.uniquePoolCache && state.uniquePoolCache.length > 1) {
+                    buildRetentionTimeline(state.uniquePoolCache, targetDur, state.rerollCount);
+                    state.currentPlayTime = 0;
+                    await seekAndRenderPreviewAtTime(0);
+                    logMessage(`Variasi Urutan #${state.rerollCount} berhasil disusun dengan kombinasi scene & transisi acak baru!`, 'success');
+                }
+            });
+        }
+
+        /**
+         * Membangkitkan Sound Effect (SFX) Transisi secara prosedural dengan Web Audio API
+         * Mendukung routing langsung ke speaker DAN ke MediaStreamAudioDestinationNode saat render MP4
+         */
+        function triggerProceduralTransitionSfx(sfxId, customDestinationNode = null, delaySec = 0) {
+            if (!state.enableSfx || !sfxId || sfxId === 'none') return null;
+
+            const audioCtx = getAudioContext();
+            const startTime = audioCtx.currentTime + Math.max(0, delaySec);
+            const masterGain = audioCtx.createGain();
+            const peakGain = Math.max(0.02, Math.min(1.0, state.sfxVolume * 0.65));
+
+            masterGain.connect(audioCtx.destination);
+            if (customDestinationNode) {
+                masterGain.connect(customDestinationNode);
+            }
+
+            const activeNodes = [];
+
+            if (sfxId === 'whoosh_air') {
+                // Cinematic Air Whoosh (Bandpass filtered pink/white noise sweep)
+                const dur = 0.34;
+                const bufSize = Math.floor(audioCtx.sampleRate * dur);
+                const noiseBuf = audioCtx.createBuffer(1, bufSize, audioCtx.sampleRate);
+                const data = noiseBuf.getChannelData(0);
+                for (let i = 0; i < bufSize; i++) {
+                    data[i] = (Math.random() * 2 - 1) * Math.sin((i / bufSize) * Math.PI);
+                }
+
+                const noiseSrc = audioCtx.createBufferSource();
+                noiseSrc.buffer = noiseBuf;
+
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.Q.setValueAtTime(2.4, startTime);
+                filter.frequency.setValueAtTime(190, startTime);
+                filter.frequency.exponentialRampToValueAtTime(1450, startTime + dur * 0.48);
+                filter.frequency.exponentialRampToValueAtTime(220, startTime + dur);
+
+                masterGain.gain.setValueAtTime(0.001, startTime);
+                masterGain.gain.linearRampToValueAtTime(peakGain, startTime + dur * 0.42);
+                masterGain.gain.exponentialRampToValueAtTime(0.001, startTime + dur);
+
+                noiseSrc.connect(filter);
+                filter.connect(masterGain);
+                noiseSrc.start(startTime);
+                noiseSrc.stop(startTime + dur);
+                activeNodes.push(noiseSrc);
+            } else if (sfxId === 'swoop_swish') {
+                // Deep Swoop Swish (Low-mid resonant filter sweep + soft sine body)
+                const dur = 0.30;
+                const bufSize = Math.floor(audioCtx.sampleRate * dur);
+                const noiseBuf = audioCtx.createBuffer(1, bufSize, audioCtx.sampleRate);
+                const data = noiseBuf.getChannelData(0);
+                for (let i = 0; i < bufSize; i++) {
+                    data[i] = (Math.random() * 2 - 1);
+                }
+
+                const noiseSrc = audioCtx.createBufferSource();
+                noiseSrc.buffer = noiseBuf;
+
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'lowpass';
+                filter.Q.setValueAtTime(4.0, startTime);
+                filter.frequency.setValueAtTime(140, startTime);
+                filter.frequency.exponentialRampToValueAtTime(980, startTime + dur * 0.45);
+                filter.frequency.exponentialRampToValueAtTime(160, startTime + dur);
+
+                const osc = audioCtx.createOscillator();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(160, startTime);
+                osc.frequency.exponentialRampToValueAtTime(62, startTime + dur);
+
+                masterGain.gain.setValueAtTime(0.001, startTime);
+                masterGain.gain.linearRampToValueAtTime(peakGain * 0.9, startTime + dur * 0.35);
+                masterGain.gain.exponentialRampToValueAtTime(0.001, startTime + dur);
+
+                noiseSrc.connect(filter);
+                filter.connect(masterGain);
+                osc.connect(masterGain);
+
+                noiseSrc.start(startTime);
+                noiseSrc.stop(startTime + dur);
+                osc.start(startTime);
+                osc.stop(startTime + dur);
+                activeNodes.push(noiseSrc, osc);
+            } else if (sfxId === 'bass_punch') {
+                // Sub Bass Impact Punch (Punchy pitch drop 145Hz -> 38Hz + airy transient)
+                const dur = 0.32;
+                const osc = audioCtx.createOscillator();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(145, startTime);
+                osc.frequency.exponentialRampToValueAtTime(38, startTime + dur);
+
+                const subOsc = audioCtx.createOscillator();
+                subOsc.type = 'triangle';
+                subOsc.frequency.setValueAtTime(95, startTime);
+                subOsc.frequency.exponentialRampToValueAtTime(32, startTime + dur);
+
+                masterGain.gain.setValueAtTime(0.001, startTime);
+                masterGain.gain.linearRampToValueAtTime(peakGain * 1.1, startTime + 0.025);
+                masterGain.gain.exponentialRampToValueAtTime(0.001, startTime + dur);
+
+                osc.connect(masterGain);
+                subOsc.connect(masterGain);
+                osc.start(startTime);
+                osc.stop(startTime + dur);
+                subOsc.start(startTime);
+                subOsc.stop(startTime + dur);
+                activeNodes.push(osc, subOsc);
+            } else if (sfxId === 'shutter_flash') {
+                // Crisp Shutter Flash Pop (High transient pop + warm shimmer tail)
+                const dur = 0.26;
+                const osc = audioCtx.createOscillator();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(880, startTime);
+                osc.frequency.exponentialRampToValueAtTime(210, startTime + 0.09);
+
+                const bufSize = Math.floor(audioCtx.sampleRate * dur);
+                const noiseBuf = audioCtx.createBuffer(1, bufSize, audioCtx.sampleRate);
+                const data = noiseBuf.getChannelData(0);
+                for (let i = 0; i < bufSize; i++) {
+                    data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (audioCtx.sampleRate * 0.06));
+                }
+                const noiseSrc = audioCtx.createBufferSource();
+                noiseSrc.buffer = noiseBuf;
+
+                const hp = audioCtx.createBiquadFilter();
+                hp.type = 'highpass';
+                hp.frequency.setValueAtTime(1200, startTime);
+
+                masterGain.gain.setValueAtTime(peakGain * 0.9, startTime);
+                masterGain.gain.exponentialRampToValueAtTime(0.001, startTime + dur);
+
+                osc.connect(masterGain);
+                noiseSrc.connect(hp);
+                hp.connect(masterGain);
+
+                osc.start(startTime);
+                osc.stop(startTime + 0.1);
+                noiseSrc.start(startTime);
+                noiseSrc.stop(startTime + dur);
+                activeNodes.push(osc, noiseSrc);
+            } else {
+                // Warm Harmonic Shimmer (Soft dual-chime swell for Iris & Cross Dissolve)
+                const dur = 0.36;
+                const osc1 = audioCtx.createOscillator();
+                const osc2 = audioCtx.createOscillator();
+                osc1.type = 'sine';
+                osc2.type = 'triangle';
+                osc1.frequency.setValueAtTime(440, startTime);
+                osc1.frequency.exponentialRampToValueAtTime(587.33, startTime + dur);
+                osc2.frequency.setValueAtTime(659.25, startTime);
+                osc2.frequency.exponentialRampToValueAtTime(880, startTime + dur);
+
+                masterGain.gain.setValueAtTime(0.001, startTime);
+                masterGain.gain.linearRampToValueAtTime(peakGain * 0.55, startTime + dur * 0.4);
+                masterGain.gain.exponentialRampToValueAtTime(0.001, startTime + dur);
+
+                osc1.connect(masterGain);
+                osc2.connect(masterGain);
+                osc1.start(startTime);
+                osc1.stop(startTime + dur);
+                osc2.start(startTime);
+                osc2.stop(startTime + dur);
+                activeNodes.push(osc1, osc2);
+            }
+
+            return activeNodes;
+        }
+
+        // Tabs switching
+        function switchBottomTab(tab) {
+            els.viewTimelineContainer.classList.add('hidden');
+            els.viewRejectedContainer.classList.add('hidden');
+            els.viewLogsContainer.classList.add('hidden');
+
+            els.tabBtnTimeline.className = 'px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-argon-950 text-slate-400 border border-slate-800 cursor-pointer';
+            els.tabBtnRejected.className = 'px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-argon-950 text-slate-400 border border-slate-800 cursor-pointer';
+            els.tabBtnLogs.className = 'px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-argon-950 text-slate-400 border border-slate-800 cursor-pointer';
+
+            if (tab === 'timeline') {
+                els.viewTimelineContainer.classList.remove('hidden');
+                els.tabBtnTimeline.className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 cursor-pointer';
+            } else if (tab === 'rejected') {
+                els.viewRejectedContainer.classList.remove('hidden');
+                els.tabBtnRejected.className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold bg-rose-500/20 text-rose-300 border border-rose-500/40 cursor-pointer';
+            } else {
+                els.viewLogsContainer.classList.remove('hidden');
+                els.tabBtnLogs.className = 'px-3.5 py-1.5 rounded-lg text-xs font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 cursor-pointer';
+            }
+        }
+
+        els.tabBtnTimeline.addEventListener('click', () => switchBottomTab('timeline'));
+        els.tabBtnRejected.addEventListener('click', () => switchBottomTab('rejected'));
+        els.tabBtnLogs.addEventListener('click', () => switchBottomTab('logs'));
+
+        /***********************************************************************
+         * 2. FILE LOADING (DUAL-DECODER MULTI-VIDEO & VOICE OVER MP3/WAV)
+         ***********************************************************************/
+        async function extractVideoAudioBuffer(fileObj) {
+            try {
+                const arrayBuf = await fileObj.arrayBuffer();
+                const audioCtx = getAudioContext();
+                const decoded = await audioCtx.decodeAudioData(arrayBuf.slice(0));
+                return decoded;
+            } catch (_) {
+                return null;
+            }
+        }
+
+        function createMutedVideoDecoderElement(url) {
+            const v = document.createElement('video');
+            v.preload = 'auto';
+            v.muted = true;
+            v.playsInline = true;
+            v.crossOrigin = 'anonymous';
+            v.src = url;
+            return v;
+        }
+
+        /**
+         * Memuat metadata video beserta DUA elemen decoder (<video> Primary & <video> Secondary Buffer)
+         * untuk menghilangkan kedip hitam / seeking lag ketika transisi antar-scene terjadi pada file yang sama.
+         */
+        function loadVideoMetadata(fileObj) {
+            return new Promise((resolve, reject) => {
+                const url = URL.createObjectURL(fileObj);
+                const videoPrimary = createMutedVideoDecoderElement(url);
+                const videoSecondary = createMutedVideoDecoderElement(url);
+
+                videoPrimary.onloadedmetadata = async () => {
+                    const extractedAudio = await extractVideoAudioBuffer(fileObj);
+                    // Pastikan decoder sekunder juga siap pada detik 0
+                    videoSecondary.currentTime = 0;
+                    resolve({
+                        name: fileObj.name || 'Video_Clip.mp4',
+                        url,
+                        duration: videoPrimary.duration || 4.0,
+                        width: videoPrimary.videoWidth || 1280,
+                        height: videoPrimary.videoHeight || 720,
+                        videoEl: videoPrimary,
+                        videoElSecondary: videoSecondary,
+                        audioBuffer: extractedAudio,
+                        hasAudio: Boolean(extractedAudio)
+                    });
+                };
+                videoPrimary.onerror = () => reject(new Error(`Gagal memuat video: ${fileObj.name}`));
+            });
+        }
+
+        els.inputVideos.addEventListener('change', async (e) => {
+            const files = Array.from(e.target.files || []);
+            if (!files.length) return;
+
+            setProgress(15, 'Memuat bahan video...');
+            for (const f of files) {
+                try {
+                    const meta = await loadVideoMetadata(f);
+                    state.videoFiles.push(meta);
+                    logMessage(`Video dimuat: ${meta.name} (${meta.duration.toFixed(2)}s, ${meta.width}x${meta.height})`, 'info');
+                } catch (err) {
+                    logMessage(err.message, 'error');
+                }
+            }
+            renderVideoFilesList();
+            updateMediaCounters();
+            setProgress(100, 'Bahan video siap dianalisis');
+        });
+
+        function renderVideoFilesList() {
+            if (!state.videoFiles.length) {
+                els.videoFilesList.classList.add('hidden');
+                return;
+            }
+            els.videoFilesList.classList.remove('hidden');
+            els.videoFilesList.innerHTML = '';
+            state.videoFiles.forEach((v, idx) => {
+                const row = document.createElement('div');
+                row.className = 'flex items-center justify-between px-3 py-1.5 rounded-lg bg-argon-950 border border-slate-800 text-xs';
+                row.innerHTML = `
+                    <div class="flex items-center gap-2 truncate">
+                        <span class="w-4 h-4 rounded bg-cyan-500/20 text-cyan-300 font-mono text-[10px] flex items-center justify-center">${idx + 1}</span>
+                        <span class="truncate text-slate-200 font-medium">${v.name}</span>
+                        <span class="px-1.5 py-0.5 rounded text-[9px] font-mono ${v.hasAudio ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30' : 'bg-slate-800 text-slate-400'}">
+                            ${v.hasAudio ? '🔊 Audio Asli' : '🔇 Tanpa Audio'}
+                        </span>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <span class="font-mono text-[11px] text-cyan-400">${v.duration.toFixed(2)}s</span>
+                        <button data-remove-vid="${idx}" class="text-slate-500 hover:text-rose-400 transition cursor-pointer">✕</button>
+                    </div>
+                `;
+                els.videoFilesList.appendChild(row);
+            });
+
+            els.videoFilesList.querySelectorAll('[data-remove-vid]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const i = parseInt(btn.getAttribute('data-remove-vid'), 10);
+                    state.videoFiles.splice(i, 1);
+                    renderVideoFilesList();
+                    updateMediaCounters();
+                });
+            });
+        }
+
+        els.inputAudio.addEventListener('change', async (e) => {
+            const file = e.target.files?.[0];
+            if (!file) return;
+            await loadAudioFileObject(file);
+        });
+
+        async function loadAudioFileObject(file) {
+            try {
+                setProgress(30, 'Mendeteksi durasi presisi & amplop suara Voice Over...');
+                const arrayBuf = await file.arrayBuffer();
+                const audioCtx = getAudioContext();
+                const decodedBuffer = await audioCtx.decodeAudioData(arrayBuf.slice(0));
+                const exactDuration = decodedBuffer.duration;
+                const voiceEnvelope = computeVoiceActivityEnvelope(decodedBuffer, 0.05);
+
+                state.audioFile = {
+                    name: file.name,
+                    duration: exactDuration,
+                    audioBuffer: decodedBuffer,
+                    voiceEnvelope
+                };
+
+                els.audioFileName.textContent = file.name;
+                els.audioDurationLabel.textContent = `Durasi Terkunci: ${exactDuration.toFixed(3)} detik`;
+                els.statVoDuration.textContent = `${exactDuration.toFixed(2)} dtk`;
+                updateMediaCounters();
+                logMessage(`Voice Over dikunci: ${file.name} — Durasi eksak ${exactDuration.toFixed(3)} detik (Auto-Ducking Envelope siap).`, 'success');
+                setProgress(100, 'Voice Over siap');
+
+                if (state.videoFiles.length > 0 && !state.isRendering) {
+                    await executeSelectedPipeline();
+                }
+            } catch (err) {
+                logMessage(`Gagal membaca file audio: ${err.message}`, 'error');
+            }
+        }
+
+        /***********************************************************************
+         * 3. REAL COMPUTER VISION ENGINE (ARGON RETENTION SCORE + 64-BIT pHASH)
+         ***********************************************************************/
+        function seekVideoTo(videoEl, timeSec) {
+            return new Promise((resolve) => {
+                const clampedTime = Math.max(0, Math.min(timeSec, Math.max(0, videoEl.duration - 0.05)));
+                const onSeeked = () => {
+                    videoEl.removeEventListener('seeked', onSeeked);
+                    resolve();
+                };
+                videoEl.addEventListener('seeked', onSeeked);
+                videoEl.currentTime = clampedTime;
+            });
+        }
+
+        /**
+         * Menghitung 64-bit Average Perceptual Hash (8x8) dari ImageData 160x160
+         */
+        function computePerceptualHash64(grayArray, width, height) {
+            const blockW = Math.floor(width / 8);
+            const blockH = Math.floor(height / 8);
+            const gridVals = new Float32Array(64);
+            let totalSum = 0;
+
+            for (let by = 0; by < 8; by++) {
+                for (let bx = 0; bx < 8; bx++) {
+                    let sum = 0;
+                    let count = 0;
+                    for (let y = by * blockH; y < (by + 1) * blockH; y++) {
+                        for (let x = bx * blockW; x < (bx + 1) * blockW; x++) {
+                            sum += grayArray[y * width + x];
+                            count++;
+                        }
+                    }
+                    const avg = sum / Math.max(1, count);
+                    gridVals[by * 8 + bx] = avg;
+                    totalSum += avg;
+                }
+            }
+
+            const meanVal = totalSum / 64;
+            const bits = new Uint8Array(64);
+            for (let i = 0; i < 64; i++) {
+                bits[i] = gridVals[i] >= meanVal ? 1 : 0;
+            }
+            return bits;
+        }
+
+        function computeHammingDistance(hashA, hashB) {
+            let dist = 0;
+            for (let i = 0; i < 64; i++) {
+                if (hashA[i] !== hashB[i]) dist++;
+            }
+            return dist;
+        }
+
+        /**
+         * Menghitung Ketajaman Fokus menggunakan 3x3 Laplacian Variance pada piksel grayscale
+         */
+        function computeLaplacianSharpness(gray, w, h) {
+            let sum = 0;
+            let sumSq = 0;
+            let count = 0;
+
+            for (let y = 1; y < h - 1; y++) {
+                for (let x = 1; x < w - 1; x++) {
+                    const idx = y * w + x;
+                    const lap =
+                        -4 * gray[idx] +
+                        gray[idx - 1] +
+                        gray[idx + 1] +
+                        gray[idx - w] +
+                        gray[idx + w];
+                    sum += lap;
+                    sumSq += lap * lap;
+                    count++;
+                }
+            }
+            const mean = sum / count;
+            const variance = (sumSq / count) - (mean * mean);
+            // Normalisasi ke rentang 0..100
+            return Math.min(100, (variance / 950) * 100);
+        }
+
+        /**
+         * Menghitung Vibransi Warna (Saturasi HSV) + Kontras Luminans + Penalti Eksposur
+         */
+        function computeVibrancyAndContrast(rgba, gray) {
+            const pixelCount = gray.length;
+            let satSum = 0;
+            let lumSum = 0;
+
+            for (let i = 0; i < pixelCount; i++) {
+                const r = rgba[i * 4] / 255;
+                const g = rgba[i * 4 + 1] / 255;
+                const b = rgba[i * 4 + 2] / 255;
+                const max = Math.max(r, g, b);
+                const min = Math.min(r, g, b);
+                const d = max - min;
+                const s = max === 0 ? 0 : d / max;
+                satSum += s;
+                lumSum += gray[i] / 255;
+            }
+
+            const meanSat = satSum / pixelCount;
+            const meanLum = lumSum / pixelCount;
+
+            // Standar deviasi luminans (kontras)
+            let varSum = 0;
+            for (let i = 0; i < pixelCount; i++) {
+                const diff = (gray[i] / 255) - meanLum;
+                varSum += diff * diff;
+            }
+            const stdContrast = Math.sqrt(varSum / pixelCount);
+
+            // Penalti jika frame terlalu gelap (<0.15) atau overexposed (>0.90)
+            const exposureFactor = (meanLum >= 0.16 && meanLum <= 0.88) ? 1.0 : 0.45;
+            const rawScore = ((meanSat * 0.48) + (Math.min(stdContrast / 0.28, 1.0) * 0.52)) * exposureFactor;
+            return Math.min(100, Math.max(5, rawScore * 100));
+        }
+
+        /**
+         * Router Eksekusi Utama: Memilih antara Argon Auto-Edit atau Hanya Gabung (Direct Merge)
+         */
+        async function executeSelectedPipeline() {
+            if (state.processingMode === 'direct_merge') {
+                await runDirectMergePipeline();
+            } else {
+                await runArgonComputerVisionPipeline();
+            }
+        }
+
+        /**
+         * MODE HANYA GABUNG VIDEO & AUDIO (TANPA AUTO-EDIT):
+         * Menggabungkan bahan video secara utuh & berurutan tanpa pemotongan scene mikro,
+         * tanpa pHash deduplikasi, tanpa pengacakan urutan, dan tanpa transisi, lalu
+         * memotong tepat saat durasi Voice Over (.mp3/.wav) selesai.
+         */
+        async function runDirectMergePipeline() {
+            if (!state.videoFiles.length) {
+                logMessage('Peringatan: Pilih minimal 1 file video atau klik "Muat 4 Sampel Demo Otomatis".', 'warn');
+                return;
+            }
+
+            stopPreviewPlayback();
+            els.btnRunArgon.disabled = true;
+            els.statusText.textContent = 'Menggabungkan...';
+            els.statusDot.className = 'w-2 h-2 rounded-full bg-amber-400 animate-ping';
+
+            const targetVoDuration = getEffectiveTargetDuration();
+            els.statVoDuration.textContent = `${targetVoDuration.toFixed(2)} dtk`;
+            const cvCanvas = els.cvAnalysisCanvas;
+            const cvCtx = cvCanvas.getContext('2d', { willReadFrequently: true });
+
+            setProgress(35, 'Menyiapkan penggabungan langsung (Tanpa Auto-Edit)...');
+            logMessage(
+                `Memulai Mode Hanya Gabung (Tanpa Auto-Edit): ${state.videoFiles.length} video utuh digabung ke target durasi (${targetVoDuration.toFixed(3)}s).`,
+                'info'
+            );
+
+            // Buat thumbnail cepat untuk masing-masing video utuh
+            const videoThumbs = [];
+            for (let i = 0; i < state.videoFiles.length; i++) {
+                const v = state.videoFiles[i];
+                const snapTime = Math.min(0.5, Math.max(0, v.duration * 0.2));
+                await seekVideoTo(v.videoEl, snapTime);
+                cvCtx.drawImage(v.videoEl, 0, 0, cvCanvas.width, cvCanvas.height);
+                videoThumbs.push(cvCanvas.toDataURL('image/jpeg', 0.75));
+            }
+
+            const timeline = [];
+            let accumulated = 0;
+            let loopCursor = 0;
+
+            while (accumulated + 0.02 < targetVoDuration) {
+                const vIdx = loopCursor % state.videoFiles.length;
+                const vidMeta = state.videoFiles[vIdx];
+                const fullDur = Math.max(0.2, Number(vidMeta.duration.toFixed(3)));
+                const remainingNeeded = Number((targetVoDuration - accumulated).toFixed(3));
+                const useDur = Math.min(fullDur, remainingNeeded);
+                const isTrimmedEnd = fullDur > remainingNeeded;
+                // Gunakan decoder primer & sekunder secara bergantian jika video yang sama berulang
+                const useSecondary = (loopCursor % 2 === 1) && Boolean(vidMeta.videoElSecondary);
+
+                const seg = {
+                    id: `direct_${loopCursor}_${vIdx}`,
+                    videoIndex: vIdx,
+                    videoName: vidMeta.name,
+                    videoEl: useSecondary ? vidMeta.videoElSecondary : vidMeta.videoEl,
+                    primaryVideoEl: vidMeta.videoEl,
+                    secondaryVideoEl: vidMeta.videoElSecondary || vidMeta.videoEl,
+                    sourceAudioBuffer: vidMeta.audioBuffer || null,
+                    hasAudio: Boolean(vidMeta.hasAudio && vidMeta.audioBuffer),
+                    clipAudioMuted: false,
+                    startSec: 0,
+                    endSec: Number(useDur.toFixed(3)),
+                    duration: Number(useDur.toFixed(3)),
+                    timelineStart: Number(accumulated.toFixed(3)),
+                    timelineEnd: Number((accumulated + useDur).toFixed(3)),
+                    sharpnessScore: 100,
+                    motionScore: 100,
+                    vibrancyScore: 100,
+                    totalArgonScore: 100,
+                    thumbnail: videoThumbs[vIdx],
+                    isGoldenHook: false,
+                    isDirectMerge: true,
+                    trimmedForAudioEnd: isTrimmedEnd,
+                    transition: { id: 'none', name: 'Direct Merge (Tanpa Transisi)', sfxId: 'none', sfxName: 'Tanpa SFX' }
+                };
+
+                timeline.push(seg);
+                accumulated = Number((accumulated + useDur).toFixed(3));
+                loopCursor++;
+            }
+
+            state.timeline = timeline;
+            state.rejectedSegments = [];
+
+            // Update Statistik UI
+            els.statGoldenHook.textContent = 'MURNI (UTUH)';
+            els.statAcceptedCount.textContent = `${timeline.length} Video Utuh`;
+            els.statRejectedCount.textContent = '0 (Tanpa Potong)';
+            els.countTimelineBadge.textContent = timeline.length;
+            els.countRejectedBadge.textContent = 0;
+
+            renderTimelineCardsUI();
+            renderRejectedCardsUI();
+
+            setProgress(100, 'Penggabungan Langsung (Tanpa Auto-Edit) Selesai!');
+            els.statusText.textContent = 'Siap Render';
+            els.statusDot.className = 'w-2 h-2 rounded-full bg-emerald-400';
+            els.btnRunArgon.disabled = false;
+            els.btnPlayPause.disabled = false;
+            els.btnStopPreview.disabled = false;
+            els.btnRenderFinal.disabled = false;
+            els.timelineScrubber.disabled = false;
+            els.timelineScrubber.max = targetVoDuration.toFixed(3);
+
+            state.currentPlayTime = 0;
+            await seekAndRenderPreviewAtTime(0);
+            logMessage(
+                `Mode Hanya Gabung siap: ${timeline.length} klip video utuh disinkronkan tepat ke durasi target (${targetVoDuration.toFixed(3)}s) tanpa auto-edit.`,
+                'success'
+            );
+        }
+
+        /**
+         * Menjalankan Pemindaian Visi Komputer Argon di seluruh bahan video
+         */
+        async function runArgonComputerVisionPipeline() {
+            if (!state.videoFiles.length) {
+                logMessage('Peringatan: Pilih minimal 1 file video atau klik "Muat 4 Sampel Demo Otomatis".', 'warn');
+                return;
+            }
+
+            stopPreviewPlayback();
+            els.btnRunArgon.disabled = true;
+            els.statusText.textContent = 'Memindai Frame...';
+            els.statusDot.className = 'w-2 h-2 rounded-full bg-amber-400 animate-ping';
+
+            const clipLen = state.pacingSec;
+            const dedupThresh = state.dedupThreshold;
+            const targetVoDuration = getEffectiveTargetDuration();
+            els.statVoDuration.textContent = `${targetVoDuration.toFixed(2)} dtk`;
+            if (!state.audioFile) {
+                logMessage(`Info: File Voice Over (.mp3) belum diunggah. Menggunakan durasi fallback otomatis (${targetVoDuration.toFixed(2)}s).`, 'warn');
+            }
+
+            const cvCanvas = els.cvAnalysisCanvas;
+            const cvCtx = cvCanvas.getContext('2d', { willReadFrequently: true });
+            const cw = cvCanvas.width;
+            const ch = cvCanvas.height;
+
+            const candidates = [];
+            let totalSlicesToScan = 0;
+            state.videoFiles.forEach(v => {
+                totalSlicesToScan += Math.max(1, Math.floor(v.duration / clipLen));
+            });
+
+            let scannedSlices = 0;
+            logMessage(`Memulai Argon Vision Scan: ${state.videoFiles.length} video | Pacing: ${clipLen}s | Target Durasi: ${targetVoDuration.toFixed(3)}s`, 'info');
+            for (let vIdx = 0; vIdx < state.videoFiles.length; vIdx++) {
+                const vidMeta = state.videoFiles[vIdx];
+                const videoEl = vidMeta.videoEl;
+                let currStart = 0;
+
+                while (currStart + 0.6 <= vidMeta.duration) {
+                    const currEnd = Math.min(currStart + clipLen, vidMeta.duration);
+                    const segDur = currEnd - currStart;
+                    if (segDur < 0.6) break;
+
+                    // Ambil 3 sampel waktu di dalam segmen (awal, tengah, akhir) untuk mengukur gerakan & fokus
+                    const tSamples = [
+                        currStart + segDur * 0.18,
+                        currStart + segDur * 0.50,
+                        currStart + segDur * 0.82
+                    ];
+
+                    const grayFrames = [];
+                    let midRgba = null;
+                    let thumbnailDataUrl = '';
+
+                    for (let sIdx = 0; sIdx < tSamples.length; sIdx++) {
+                        await seekVideoTo(videoEl, tSamples[sIdx]);
+                        cvCtx.drawImage(videoEl, 0, 0, cw, ch);
+                        const imgData = cvCtx.getImageData(0, 0, cw, ch);
+                        const rgba = imgData.data;
+                        const gray = new Float32Array(cw * ch);
+
+                        for (let p = 0; p < cw * ch; p++) {
+                            gray[p] = 0.299 * rgba[p * 4] + 0.587 * rgba[p * 4 + 1] + 0.114 * rgba[p * 4 + 2];
+                        }
+                        grayFrames.push(gray);
+
+                        if (sIdx === 1) {
+                            midRgba = new Uint8ClampedArray(rgba);
+                            thumbnailDataUrl = cvCanvas.toDataURL('image/jpeg', 0.72);
+                        }
+                    }
+
+                    // 1. Skor Ketajaman (35%)
+                    const sharpScores = grayFrames.map(g => computeLaplacianSharpness(g, cw, ch));
+                    const sharpnessScore = sharpScores.reduce((a, b) => a + b, 0) / sharpScores.length;
+
+                    // 2. Skor Dinamika Gerakan Ideal / Optical Motion Sweet-Spot (35%)
+                    let diffSum1 = 0, diffSum2 = 0;
+                    const len = cw * ch;
+                    for (let i = 0; i < len; i++) {
+                        diffSum1 += Math.abs(grayFrames[1][i] - grayFrames[0][i]);
+                        diffSum2 += Math.abs(grayFrames[2][i] - grayFrames[1][i]);
+                    }
+                    const avgMotionDiff = ((diffSum1 / len) + (diffSum2 / len)) / 2;
+
+                    let motionScore = 0;
+                    if (avgMotionDiff < 1.2) {
+                        // Frame mati / statis
+                        motionScore = 18 + (avgMotionDiff * 10);
+                    } else if (avgMotionDiff >= 1.2 && avgMotionDiff <= 24.0) {
+                        // Sweet-spot gerakan manusia/objek yang membuat penonton betah
+                        motionScore = 100 - (Math.abs(avgMotionDiff - 10.5) / 16.0) * 35;
+                    } else {
+                        // Guncangan kamera terlalu liar
+                        motionScore = Math.max(15, 75 - (avgMotionDiff - 24.0) * 2.2);
+                    }
+                    motionScore = Math.min(100, Math.max(10, motionScore));
+
+                    // 3. Skor Vibransi & Kontras (30%)
+                    const vibrancyScore = computeVibrancyAndContrast(midRgba, grayFrames[1]);
+
+                    // Total Argon Retention Score
+                    const totalArgonScore =
+                        (sharpnessScore * 0.35) +
+                        (motionScore * 0.35) +
+                        (vibrancyScore * 0.30);
+
+                    // 64-Bit Perceptual Hash
+                    const phash = computePerceptualHash64(grayFrames[1], cw, ch);
+
+                    candidates.push({
+                        id: `seg_${vIdx}_${Math.round(currStart * 10)}`,
+                        videoIndex: vIdx,
+                        videoName: vidMeta.name,
+                        videoEl: videoEl,
+                        primaryVideoEl: vidMeta.videoEl,
+                        secondaryVideoEl: vidMeta.videoElSecondary || vidMeta.videoEl,
+                        sourceAudioBuffer: vidMeta.audioBuffer || null,
+                        hasAudio: Boolean(vidMeta.hasAudio && vidMeta.audioBuffer),
+                        clipAudioMuted: false,
+                        startSec: Number(currStart.toFixed(3)),
+                        endSec: Number(currEnd.toFixed(3)),
+                        duration: Number(segDur.toFixed(3)),
+                        sharpnessScore: Number(sharpnessScore.toFixed(1)),
+                        motionScore: Number(motionScore.toFixed(1)),
+                        vibrancyScore: Number(vibrancyScore.toFixed(1)),
+                        totalArgonScore: Number(totalArgonScore.toFixed(1)),
+                        phash,
+                        thumbnail: thumbnailDataUrl,
+                        locked: false
+                    });
+
+                    scannedSlices++;
+                    setProgress((scannedSlices / Math.max(1, totalSlicesToScan)) * 80, `Memindai frame & pHash (${scannedSlices}/${totalSlicesToScan})...`);
+                    currStart += clipLen;
+                }
+            }
+
+            state.allCandidates = candidates;
+
+            // Urutkan kandidat berdasarkan Total Argon Score tertinggi ke terendah
+            const sortedCandidates = [...candidates].sort((a, b) => b.totalArgonScore - a.totalArgonScore);
+
+            // Filter Anti-Duplikat menggunakan Perceptual Hash Hamming Distance
+            const uniquePool = [];
+            const rejectedPool = [];
+
+            for (const cand of sortedCandidates) {
+                let duplicateOf = null;
+                let minDistance = 64;
+
+                for (const accepted of uniquePool) {
+                    const dist = computeHammingDistance(cand.phash, accepted.phash);
+                    if (dist <= dedupThresh) {
+                        duplicateOf = accepted;
+                        minDistance = dist;
+                        break;
+                    }
+                }
+
+                if (duplicateOf) {
+                    rejectedPool.push({
+                        ...cand,
+                        rejectReason: `Duplikat Visual (pHash Dist: ${minDistance} bit dgn ${duplicateOf.videoName} @${duplicateOf.startSec}s)`
+                    });
+                } else if (cand.totalArgonScore < 28) {
+                    rejectedPool.push({
+                        ...cand,
+                        rejectReason: `Skor Retensi Rendah (${cand.totalArgonScore}/100 — Blur/Statis)`
+                    });
+                } else {
+                    uniquePool.push(cand);
+                }
+            }
+
+            // Fallback apabila semua segmen terfilter karena threshold terlalu ekstrem
+            if (uniquePool.length === 0 && sortedCandidates.length > 0) {
+                uniquePool.push(sortedCandidates[0]);
+            }
+
+            state.uniquePoolCache = uniquePool;
+            state.rejectedSegments = rejectedPool;
+            logMessage(`Filter Anti-Duplikat selesai: ${uniquePool.length} scene unik lolos, ${rejectedPool.length} scene duplikat/blur dibuang.`, 'info');
+
+            // Susun Timeline Retensi tepat sepanjang durasi Voice Over MP3
+            buildRetentionTimeline(uniquePool, targetVoDuration, state.rerollCount);
+            setProgress(100, 'Analisis & Auto-Edit Argon Selesai!');
+            els.statusText.textContent = 'Timeline Siap';
+            els.statusDot.className = 'w-2 h-2 rounded-full bg-emerald-400';
+            els.btnRunArgon.disabled = false;
+            els.btnPlayPause.disabled = false;
+            els.btnStopPreview.disabled = false;
+            els.btnRenderFinal.disabled = false;
+            els.timelineScrubber.disabled = false;
+            els.timelineScrubber.max = targetVoDuration.toFixed(3);
+
+            // Render frame pertama (Golden Hook) ke kanvas preview
+            state.currentPlayTime = 0;
+            await seekAndRenderPreviewAtTime(0);
+        }
+
+        /**
+         * Menyusun Timeline Retensi (Golden Hook di 0.0s + Zig-Zag Pacing) dan memotong tepat sesuai durasi MP3.
+         * Juga mengalokasikan Dual-Decoder (Primary vs Secondary <video>) secara bergantian agar transisi 100% mulus.
+         */
+        function assignDualDecodersToTimeline(timeline) {
+            for (let i = 0; i < timeline.length; i++) {
+                const seg = timeline[i];
+                const primary = seg.primaryVideoEl || seg.videoEl;
+                const secondary = seg.secondaryVideoEl || seg.videoEl;
+                if (i > 0 && timeline[i - 1].videoIndex === seg.videoIndex) {
+                    // Jika dua klip berurutan berasal dari file video yang sama, gunakan decoder yang berbeda!
+                    seg.videoEl = (timeline[i - 1].videoEl === primary) ? secondary : primary;
+                } else {
+                    seg.videoEl = (i % 2 === 0) ? primary : secondary;
+                }
+            }
+        }
+
+        function buildRetentionTimeline(uniquePool, targetVoDuration, variationSeed = 0) {
+            const pool = [...uniquePool].sort((a, b) => b.totalArgonScore - a.totalArgonScore);
+            const timeline = [];
+            let accumulated = 0;
+
+            // 1. Tempatkan klip dengan Argon Score tertinggi (atau Top-2 saat re-roll) di awal sebagai GOLDEN HOOK
+            const hookCandidateIdx = (variationSeed > 0 && pool.length > 1) ? (variationSeed % Math.min(2, pool.length)) : 0;
+            const goldenHook = { ...pool.splice(hookCandidateIdx, 1)[0], isGoldenHook: true };
+            if (goldenHook.duration > targetVoDuration) {
+                goldenHook.duration = Number(targetVoDuration.toFixed(3));
+                goldenHook.endSec = Number((goldenHook.startSec + goldenHook.duration).toFixed(3));
+            }
+            GoldenHookAssignTimelineSlot(goldenHook, 0);
+            timeline.push(goldenHook);
+            accumulated += goldenHook.duration;
+
+            // 2. Susun sisa klip hingga mencapai targetVoDuration secara presisi
+            let stepCounter = variationSeed;
+            while (accumulated + 0.02 < targetVoDuration) {
+                if (pool.length === 0) {
+                    // Jika durasi MP3 lebih panjang dari stok unik, isi kembali dari kandidat terbaik
+                    pool.push(...uniquePool.sort((a, b) => b.totalArgonScore - a.totalArgonScore));
+                }
+
+                const lastClip = timeline[timeline.length - 1];
+                let chosenIdx = 0;
+
+                if (state.strategy === 'zigzag') {
+                    // Cari klip dari video berbeda atau jarak timestamp > 2.2 detik agar terjadi pattern interrupt
+                    const validIndices = [];
+                    for (let i = 0; i < pool.length; i++) {
+                        const cand = pool[i];
+                        const differentSource = cand.videoIndex !== lastClip.videoIndex;
+                        const farTimestamp = Math.abs(cand.startSec - lastClip.endSec) > 2.2;
+                        if (differentSource || farTimestamp) {
+                            validIndices.push(i);
+                        }
+                    }
+                    if (validIndices.length > 0) {
+                        chosenIdx = validIndices[stepCounter % validIndices.length];
+                    }
+                } else if (variationSeed > 0 && pool.length > 1) {
+                    chosenIdx = stepCounter % Math.min(2, pool.length);
+                }
+
+                stepCounter++;
+                const nextRaw = { ...pool.splice(chosenIdx, 1)[0], isGoldenHook: false };
+                const remainingNeeded = Number((targetVoDuration - accumulated).toFixed(3));
+
+                if (nextRaw.duration > remainingNeeded) {
+                    nextRaw.duration = remainingNeeded;
+                    nextRaw.endSec = Number((nextRaw.startSec + remainingNeeded).toFixed(3));
+                    nextRaw.trimmedForAudioEnd = true;
+                }
+
+                GoldenHookAssignTimelineSlot(nextRaw, accumulated);
+                timeline.push(nextRaw);
+                accumulated = Number((accumulated + nextRaw.duration).toFixed(3));
+            }
+
+            assignDualDecodersToTimeline(timeline);
+            state.timeline = timeline;
+            randomizeTimelineTransitions();
+
+            // Update Statistik UI
+            els.statGoldenHook.textContent = `${timeline[0].totalArgonScore} / 100`;
+            els.statAcceptedCount.textContent = `${timeline.length} Klip`;
+            els.statRejectedCount.textContent = `${state.rejectedSegments.length} Klip`;
+            els.countTimelineBadge.textContent = timeline.length;
+            els.countRejectedBadge.textContent = state.rejectedSegments.length;
+
+            renderTimelineCardsUI();
+            renderRejectedCardsUI();
+
+            logMessage(
+                `Timeline terkunci: ${timeline.length} potongan scene (Dual-Decoder Aktif) | Total Durasi = ${accumulated.toFixed(3)}s.`,
+                'success'
+            );
+        }
+
+        function GoldenHookAssignTimelineSlot(seg, startAt) {
+            seg.timelineStart = Number(startAt.toFixed(3));
+            seg.timelineEnd = Number((startAt + seg.duration).toFixed(3));
+        }
+
+        function recalculateTimelineTimestamps() {
+            const targetVoDuration = getEffectiveTargetDuration();
+            let acc = 0;
+            for (let i = 0; i < state.timeline.length; i++) {
+                const seg = state.timeline[i];
+                seg.isGoldenHook = (i === 0) && !seg.isDirectMerge;
+                const rem = Number((targetVoDuration - acc).toFixed(3));
+                const origFullDur = Number((seg.endSec - seg.startSec).toFixed(3));
+                const useDur = (i === state.timeline.length - 1) ? Math.min(origFullDur, rem) : Math.min(seg.duration, rem);
+                seg.duration = Number(Math.max(0.1, useDur).toFixed(3));
+                seg.timelineStart = Number(acc.toFixed(3));
+                seg.timelineEnd = Number((acc + seg.duration).toFixed(3));
+                acc = seg.timelineEnd;
+            }
+            assignDualDecodersToTimeline(state.timeline);
+            els.statGoldenHook.textContent = state.timeline[0]
+                ? (state.timeline[0].isDirectMerge ? 'MURNI (UTUH)' : `${state.timeline[0].totalArgonScore} / 100`)
+                : '-- / 100';
+        }
+
+        /***********************************************************************
+         * 4. INTERACTIVE TIMELINE CARDS & REJECTED INSPECTOR UI
+         ***********************************************************************/
+        function renderTimelineCardsUI() {
+            els.viewTimelineContainer.innerHTML = '';
+            state.timeline.forEach((seg, idx) => {
+                const card = document.createElement('div');
+                const isFirst = idx === 0;
+                const isDirect = Boolean(seg.isDirectMerge);
+                card.className = `rounded-xl p-3 border transition flex flex-col justify-between gap-2.5 cursor-pointer ${
+                    isDirect
+                        ? 'bg-argon-950/90 border-amber-500/40 hover:border-amber-400'
+                        : isFirst
+                            ? 'bg-gradient-to-br from-amber-950/40 via-argon-900 to-argon-950 border-amber-400/60 golden-glow'
+                            : 'bg-argon-950/90 border-slate-800 hover:border-cyan-500/50'
+                }`;
+
+                card.innerHTML = `
+                    <div class="flex gap-3">
+                        <div class="relative w-24 h-20 rounded-lg overflow-hidden bg-black shrink-0 border border-slate-700">
+                            <img src="${seg.thumbnail}" alt="Frame" class="w-full h-full object-cover">
+                            <span class="absolute top-1 left-1 px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-slate-950/85 text-cyan-300">
+                                #${idx + 1}
+                            </span>
+                            <span class="absolute bottom-1 right-1 px-1 py-0.5 rounded text-[9px] font-mono bg-slate-950/85 text-amber-300">
+                                ${seg.duration.toFixed(2)}s
+                            </span>
+                        </div>
+
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center justify-between gap-1">
+                                ${
+                                    isDirect
+                                        ? `<span class="px-2 py-0.5 rounded-full text-[9px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/40 uppercase tracking-wider">🔗 GABUNG MURNI (${seg.timelineStart.toFixed(1)}s–${seg.timelineEnd.toFixed(1)}s)</span>`
+                                        : isFirst
+                                            ? `<span class="px-2 py-0.5 rounded-full text-[9px] font-mono font-bold bg-amber-400 text-slate-950 uppercase tracking-wider">★ GOLDEN HOOK</span>`
+                                            : `<span class="text-[10px] font-mono text-slate-400">${seg.timelineStart.toFixed(2)}s – ${seg.timelineEnd.toFixed(2)}s</span>`
+                                }
+                                <span class="font-mono text-xs font-extrabold ${isDirect ? 'text-amber-300' : seg.totalArgonScore >= 75 ? 'text-emerald-400' : 'text-cyan-400'}">
+                                    ${isDirect ? 'UTUH' : `${seg.totalArgonScore}/100`}
+                                </span>
+                            </div>
+
+                            <div class="text-xs font-semibold text-slate-200 truncate mt-1" title="${seg.videoName}">
+                                ${seg.videoName}
+                            </div>
+                            <div class="text-[10px] font-mono text-slate-400">
+                                Asal: ${seg.startSec.toFixed(1)}s → ${(seg.startSec + seg.duration).toFixed(1)}s
+                                ${seg.trimmedForAudioEnd ? '<span class="text-emerald-400">(Auto-Trim Akhir MP3)</span>' : ''}
+                            </div>
+
+                            <!-- Transition Selector Badge per Scene Cut -->
+                            <div class="mt-2 flex items-center justify-between gap-1.5 bg-argon-900/90 border border-slate-800 rounded-lg px-2 py-1">
+                                ${
+                                    isDirect && isFirst
+                                        ? `<span class="text-[10px] font-mono text-emerald-300 truncate">🔗 Video Utuh Tanpa Pemotongan Scene</span>`
+                                        : isFirst
+                                            ? `<span class="text-[10px] font-mono text-amber-300 truncate">⚡ Scene Pembuka Utama (0.00s)</span>`
+                                            : `
+                                                <span class="text-[10px] font-mono text-amber-300 shrink-0">Transisi:</span>
+                                                <select data-trans-select="${idx}" class="bg-transparent text-[10px] font-mono text-cyan-300 focus:outline-none cursor-pointer truncate max-w-[155px]">
+                                                    ${TRANSITION_CATALOG.map(t => `<option value="${t.id}" class="bg-slate-900 text-slate-200" ${seg.transition?.id === t.id ? 'selected' : ''}>${t.name} (${t.sfxName})</option>`).join('')}
+                                                    <option value="none" class="bg-slate-900 text-slate-400" ${seg.transition?.id === 'none' ? 'selected' : ''}>Hard Cut (Tanpa Transisi)</option>
+                                                </select>
+                                            `
+                                }
+                            </div>
+
+                            <!-- Sub-scores bars -->
+                            ${
+                                isDirect
+                                    ? `<div class="mt-2 text-[10px] font-mono text-slate-400 bg-argon-900/60 px-2 py-1 rounded border border-slate-800/80">
+                                           Stream Asli 100% • Tanpa Filter pHash & Tanpa Auto-Cut
+                                       </div>`
+                                    : `<div class="grid grid-cols-3 gap-1.5 mt-2 text-[9px] font-mono">
+                                           <div>
+                                               <div class="text-slate-400">Tajam ${seg.sharpnessScore}</div>
+                                               <div class="w-full h-1 bg-slate-800 rounded overflow-hidden">
+                                                   <div class="h-full bg-cyan-400" style="width:${seg.sharpnessScore}%"></div>
+                                               </div>
+                                           </div>
+                                           <div>
+                                               <div class="text-slate-400">Gerak ${seg.motionScore}</div>
+                                               <div class="w-full h-1 bg-slate-800 rounded overflow-hidden">
+                                                   <div class="h-full bg-emerald-400" style="width:${seg.motionScore}%"></div>
+                                               </div>
+                                           </div>
+                                           <div>
+                                               <div class="text-slate-400">Warna ${seg.vibrancyScore}</div>
+                                               <div class="w-full h-1 bg-slate-800 rounded overflow-hidden">
+                                                   <div class="h-full bg-amber-400" style="width:${seg.vibrancyScore}%"></div>
+                                               </div>
+                                           </div>
+                                       </div>`
+                            }
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-2 border-t border-slate-800/80 text-[11px]">
+                        <div class="flex items-center gap-1.5">
+                            ${
+                                seg.hasAudio
+                                    ? `<button type="button" data-toggle-clip-audio="${idx}" class="px-2 py-0.5 rounded text-[10px] font-mono font-semibold border transition cursor-pointer ${
+                                        !state.enableOrigAudio
+                                            ? 'bg-slate-900 text-slate-500 border-slate-800'
+                                            : seg.clipAudioMuted
+                                                ? 'bg-rose-950/60 text-rose-300 border-rose-500/30 hover:bg-rose-900/60'
+                                                : 'bg-emerald-950/60 text-emerald-300 border-emerald-500/30 hover:bg-emerald-900/60'
+                                    }" title="On/Off Suara Asli khusus pada klip ini">
+                                        ${!state.enableOrigAudio ? '🔇 Global OFF' : seg.clipAudioMuted ? '🔇 Audio Asli: OFF' : '🔊 Audio Asli: ON'}
+                                    </button>`
+                                    : `<span class="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-900 text-slate-500 border border-slate-800">Tanpa Audio Asli</span>`
+                            }
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <button data-move-left="${idx}" ${idx === 0 ? 'disabled' : ''} class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 disabled:opacity-30 text-slate-200 font-mono cursor-pointer" title="Geser ke kiri">←</button>
+                            <button data-move-right="${idx}" ${idx === state.timeline.length - 1 ? 'disabled' : ''} class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 disabled:opacity-30 text-slate-200 font-mono cursor-pointer" title="Geser ke kanan">→</button>
+                            <button data-remove-seg="${idx}" ${state.timeline.length <= 1 ? 'disabled' : ''} class="px-2 py-0.5 rounded bg-rose-950/70 hover:bg-rose-800/80 disabled:opacity-30 text-rose-300 font-mono cursor-pointer" title="Hapus segmen ini">✕</button>
+                        </div>
+                    </div>
+                `;
+
+                // Klik kartu untuk lompat preview ke segmen tersebut
+                card.addEventListener('click', async (e) => {
+                    if (e.target.closest('button') || e.target.closest('select')) return;
+                    stopPreviewPlayback();
+                    state.currentPlayTime = seg.timelineStart + 0.05;
+                    els.timelineScrubber.value = state.currentPlayTime;
+                    await seekAndRenderPreviewAtTime(state.currentPlayTime);
+                });
+
+                els.viewTimelineContainer.appendChild(card);
+            });
+
+            // Bind tombol ON/OFF Audio Asli per klip
+            els.viewTimelineContainer.querySelectorAll('[data-toggle-clip-audio]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const idx = parseInt(btn.getAttribute('data-toggle-clip-audio'), 10);
+                    const seg = state.timeline[idx];
+                    if (!seg) return;
+
+                    if (!state.enableOrigAudio) {
+                        state.enableOrigAudio = true;
+                        seg.clipAudioMuted = false;
+                        updateOrigAudioUIAndGain();
+                    } else {
+                        seg.clipAudioMuted = !seg.clipAudioMuted;
+                    }
+
+                    if (seg.activeClipGainNode && state.audioCtx) {
+                        seg.activeClipGainNode.gain.setTargetAtTime(seg.clipAudioMuted ? 0 : 1, state.audioCtx.currentTime, 0.015);
+                    }
+
+                    renderTimelineCardsUI();
+                    logMessage(
+                        `Suara asli Klip #${idx + 1} (${seg.videoName}) diatur ke: ${seg.clipAudioMuted ? 'OFF (Mute)' : 'ON (Aktif)'}`,
+                        seg.clipAudioMuted ? 'warn' : 'info'
+                    );
+                });
+            });
+
+            // Bind dropdown pemilih transisi per segmen
+            els.viewTimelineContainer.querySelectorAll('[data-trans-select]').forEach(sel => {
+                sel.addEventListener('change', (e) => {
+                    e.stopPropagation();
+                    const idx = parseInt(sel.getAttribute('data-trans-select'), 10);
+                    const val = e.target.value;
+                    if (val === 'none') {
+                        state.timeline[idx].transition = { id: 'none', name: 'Hard Cut', sfxId: 'none', sfxName: 'Tanpa SFX' };
+                    } else {
+                        const foundTrans = TRANSITION_CATALOG.find(t => t.id === val);
+                        if (foundTrans) {
+                            state.timeline[idx].transition = { ...foundTrans };
+                            triggerProceduralTransitionSfx(foundTrans.sfxId, null, 0);
+                        }
+                    }
+                    seekAndRenderPreviewAtTime(state.timeline[idx].timelineStart + 0.08);
+                    logMessage(`Transisi Klip #${idx + 1} diubah ke: ${state.timeline[idx].transition.name}`, 'info');
+                });
+            });
+
+            // Bind tombol geser kiri/kanan & hapus segmen
+            els.viewTimelineContainer.querySelectorAll('[data-move-left]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const idx = parseInt(btn.getAttribute('data-move-left'), 10);
+                    if (idx > 0) {
+                        const temp = state.timeline[idx - 1];
+                        state.timeline[idx - 1] = state.timeline[idx];
+                        state.timeline[idx] = temp;
+                        recalculateTimelineTimestamps();
+                        renderTimelineCardsUI();
+                        seekAndRenderPreviewAtTime(state.currentPlayTime);
+                        logMessage(`Urutan scene dipindahkan: Klip #${idx + 1} bertukar dengan #${idx}.`, 'info');
+                    }
+                });
+            });
+
+            els.viewTimelineContainer.querySelectorAll('[data-move-right]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const idx = parseInt(btn.getAttribute('data-move-right'), 10);
+                    if (idx < state.timeline.length - 1) {
+                        const temp = state.timeline[idx + 1];
+                        state.timeline[idx + 1] = state.timeline[idx];
+                        state.timeline[idx] = temp;
+                        recalculateTimelineTimestamps();
+                        renderTimelineCardsUI();
+                        seekAndRenderPreviewAtTime(state.currentPlayTime);
+                        logMessage(`Urutan scene dipindahkan: Klip #${idx + 1} bertukar dengan #${idx + 2}.`, 'info');
+                    }
+                });
+            });
+
+            els.viewTimelineContainer.querySelectorAll('[data-remove-seg]').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const idx = parseInt(btn.getAttribute('data-remove-seg'), 10);
+                    if (state.timeline.length > 1) {
+                        const removed = state.timeline.splice(idx, 1)[0];
+                        recalculateTimelineTimestamps();
+                        els.statAcceptedCount.textContent = `${state.timeline.length} Klip`;
+                        els.countTimelineBadge.textContent = state.timeline.length;
+                        renderTimelineCardsUI();
+                        seekAndRenderPreviewAtTime(Math.min(state.currentPlayTime, state.timeline[state.timeline.length - 1].timelineEnd));
+                        logMessage(`Segmen #${idx + 1} (${removed.videoName}) dihapus dari timeline.`, 'warn');
+                    }
+                });
+            });
+        }
+
+        function renderRejectedCardsUI() {
+            els.viewRejectedContainer.innerHTML = '';
+            if (!state.rejectedSegments.length) {
+                els.viewRejectedContainer.innerHTML = `
+                    <div class="col-span-full py-10 text-center text-slate-400 text-xs">
+                        Tidak ada segmen duplikat atau blur yang ditemukan pada pengaturan ambang saat ini.
+                    </div>
+                `;
+                return;
+            }
+
+            state.rejectedSegments.forEach((seg) => {
+                const card = document.createElement('div');
+                card.className = 'rounded-xl p-3 bg-argon-950/70 border border-rose-500/30 flex gap-3 items-center opacity-85';
+                card.innerHTML = `
+                    <img src="${seg.thumbnail}" alt="Rejected" class="w-20 h-16 rounded-lg object-cover border border-rose-500/40 shrink-0 grayscale">
+                    <div class="min-w-0 flex-1">
+                        <div class="flex items-center justify-between">
+                            <span class="px-1.5 py-0.5 rounded text-[9px] font-mono font-bold bg-rose-500/20 text-rose-300">DIELIMINASI</span>
+                            <span class="font-mono text-xs text-rose-400 font-bold">Skor: ${seg.totalArgonScore}</span>
+                        </div>
+                        <div class="text-xs font-semibold text-slate-300 truncate mt-1">${seg.videoName} (${seg.startSec}s–${seg.endSec}s)</div>
+                        <div class="text-[10px] font-mono text-rose-300/90 mt-0.5 leading-snug">${seg.rejectReason}</div>
+                    </div>
+                `;
+                els.viewRejectedContainer.appendChild(card);
+            });
+        }
+
+        /***********************************************************************
+         * 5. SMART CENTER-CROP CANVAS RENDERER, MULTI-TRANSITION COMPOSITOR & PLAYBACK
+         ***********************************************************************/
+        function findSegmentAtTimelineTime(t) {
+            if (!state.timeline.length) return null;
+            for (let i = 0; i < state.timeline.length; i++) {
+                const s = state.timeline[i];
+                if (t >= s.timelineStart && t <= s.timelineEnd + 0.02) {
+                    return { seg: s, index: i };
+                }
+            }
+            return { seg: state.timeline[state.timeline.length - 1], index: state.timeline.length - 1 };
+        }
+
+        /**
+         * Menggambar frame video ke target 2D Context dengan Smart Center-Crop (9:16 atau 16:9)
+         * STRICT ZERO-OVERLAY: Hanya merender piksel video murni dengan Argon Clean Color Look.
+         */
+        function paintVideoCenterCroppedToCtx(targetCtx, cw, ch, videoEl) {
+            targetCtx.save();
+            targetCtx.fillStyle = '#000000';
+            targetCtx.fillRect(0, 0, cw, ch);
+
+            if (videoEl && videoEl.readyState >= 2) {
+                const vw = videoEl.videoWidth || 1920;
+                const vh = videoEl.videoHeight || 1080;
+                const scale = Math.max(cw / vw, ch / vh);
+                const scaledW = vw * scale;
+                const scaledH = vh * scale;
+                const offsetX = (cw - scaledW) / 2;
+                const offsetY = (ch - scaledH) / 2;
+
+                const filterPreset = COLOR_LOOK_FILTERS[state.colorLook] || 'none';
+                targetCtx.filter = filterPreset;
+                targetCtx.drawImage(videoEl, offsetX, offsetY, scaledW, scaledH);
+                targetCtx.filter = 'none';
+            }
+            targetCtx.restore();
+        }
+
+        /**
+         * Merender komposisi efek transisi visual antara outgoingBufferCanvas dan incomingBufferCanvas
+         * ke kanvas utama 1080p tanpa teks atau overlay apapun.
+         */
+        function compositeSceneTransitionOnCanvas(ctx, cw, ch, transId, progressRaw) {
+            // Cubic ease-in-out untuk pergerakan transisi yang luwes dan organik
+            const p = Math.max(0, Math.min(1, progressRaw));
+            const ease = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+
+            ctx.save();
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(0, 0, cw, ch);
+
+            if (transId === 'whip_left') {
+                const offsetOut = -ease * cw;
+                const offsetIn = (1 - ease) * cw;
+                ctx.drawImage(outgoingBufferCanvas, offsetOut, 0, cw, ch);
+                ctx.drawImage(incomingBufferCanvas, offsetIn, 0, cw, ch);
+            } else if (transId === 'whip_right') {
+                const offsetOut = ease * cw;
+                const offsetIn = -(1 - ease) * cw;
+                ctx.drawImage(outgoingBufferCanvas, offsetOut, 0, cw, ch);
+                ctx.drawImage(incomingBufferCanvas, offsetIn, 0, cw, ch);
+            } else if (transId === 'slide_up') {
+                const offsetOut = -ease * ch;
+                const offsetIn = (1 - ease) * ch;
+                ctx.drawImage(outgoingBufferCanvas, 0, offsetOut, cw, ch);
+                ctx.drawImage(incomingBufferCanvas, 0, offsetIn, cw, ch);
+            } else if (transId === 'slide_down') {
+                const offsetOut = ease * ch;
+                const offsetIn = -(1 - ease) * ch;
+                ctx.drawImage(outgoingBufferCanvas, 0, offsetOut, cw, ch);
+                ctx.drawImage(incomingBufferCanvas, 0, offsetIn, cw, ch);
+            } else if (transId === 'zoom_punch') {
+                // Outgoing membesar dan memudar, Incoming zoom-in dari 1.28x ke 1.0x
+                const scaleOut = 1 + ease * 0.35;
+                const outW = cw * scaleOut;
+                const outH = ch * scaleOut;
+                ctx.globalAlpha = 1 - ease;
+                ctx.drawImage(outgoingBufferCanvas, (cw - outW) / 2, (ch - outH) / 2, outW, outH);
+
+                const scaleIn = 1.28 - ease * 0.28;
+                const inW = cw * scaleIn;
+                const inH = ch * scaleIn;
+                ctx.globalAlpha = ease;
+                ctx.drawImage(incomingBufferCanvas, (cw - inW) / 2, (ch - inH) / 2, inW, inH);
+                ctx.globalAlpha = 1.0;
+            } else if (transId === 'flash_dip') {
+                // Cross-fade disertai eksposur cahaya sinematik lembut
+                if (p < 0.5) {
+                    ctx.drawImage(outgoingBufferCanvas, 0, 0, cw, ch);
+                } else {
+                    ctx.drawImage(incomingBufferCanvas, 0, 0, cw, ch);
+                }
+                const flashIntensity = Math.sin(p * Math.PI) * 0.72;
+                ctx.fillStyle = `rgba(255, 250, 240, ${flashIntensity.toFixed(3)})`;
+                ctx.fillRect(0, 0, cw, ch);
+            } else if (transId === 'circle_iris') {
+                ctx.drawImage(outgoingBufferCanvas, 0, 0, cw, ch);
+                const maxRadius = Math.hypot(cw / 2, ch / 2) * 1.05;
+                ctx.beginPath();
+                ctx.arc(cw / 2, ch / 2, Math.max(1, ease * maxRadius), 0, Math.PI * 2);
+                ctx.clip();
+                ctx.drawImage(incomingBufferCanvas, 0, 0, cw, ch);
+            } else {
+                // Cross Dissolve default
+                ctx.globalAlpha = 1 - ease;
+                ctx.drawImage(outgoingBufferCanvas, 0, 0, cw, ch);
+                ctx.globalAlpha = ease;
+                ctx.drawImage(incomingBufferCanvas, 0, 0, cw, ch);
+                ctx.globalAlpha = 1.0;
+            }
+
+            ctx.restore();
+        }
+
+        /**
+         * Menggambar frame video ke Kanvas Utama 1080p dengan Smart Center-Crop & Transisi Acak
+         * STRICT ZERO-OVERLAY: Hanya merender piksel video murni tanpa teks/label/watermark apapun.
+         */
+        function drawSmartCenterCropFrame(videoEl, segInfo, currentTimelineSec, preserveOutgoingSnapshot = true) {
+            const canvas = els.mainPreviewCanvas;
+            const ctx = canvas.getContext('2d');
+            const cw = canvas.width;
+            const ch = canvas.height;
+
+            const transDur = state.transitionDuration;
+            let isTransitioning = false;
+            let activeTransObj = null;
+
+            if (segInfo && segInfo.index > 0) {
+                const { seg } = segInfo;
+                const clipElapsed = Math.max(0, currentTimelineSec - seg.timelineStart);
+                const transId = seg.transition?.id || 'none';
+
+                if (transId !== 'none' && state.transitionMode !== 'none' && clipElapsed < transDur) {
+                    isTransitioning = true;
+                    activeTransObj = seg.transition;
+                    const progress = clipElapsed / transDur;
+                    paintVideoCenterCroppedToCtx(incomingBufferCtx, cw, ch, videoEl);
+                    compositeSceneTransitionOnCanvas(ctx, cw, ch, transId, progress);
+                }
+            }
+
+            if (!isTransitioning) {
+                paintVideoCenterCroppedToCtx(ctx, cw, ch, videoEl);
+                // Simpan snapshot bersih ke outgoingBufferCanvas agar siap ketika berpindah ke scene berikutnya
+                if (preserveOutgoingSnapshot && videoEl && videoEl.readyState >= 2) {
+                    outgoingBufferCtx.drawImage(canvas, 0, 0, cw, ch);
+                }
+            }
+
+            // Update telemetri & timecode di panel HTML (di luar kanvas agar video 100% bersih)
+            const totalDur = getEffectiveTargetDuration();
+            els.previewTimecode.textContent = `${formatSec(currentTimelineSec)} / ${formatSec(totalDur)}`;
+            if (segInfo) {
+                const { seg, index } = segInfo;
+                els.activeSegmentIndicator.textContent = seg.isDirectMerge
+                    ? `Video Utuh #${index + 1}: ${seg.videoName} (Tanpa Auto-Edit)`
+                    : `Klip #${index + 1}: ${seg.videoName} (Skor ${seg.totalArgonScore})`;
+                if (els.telemetryClipBadge && els.telemetryMetricsText) {
+                    if (seg.isDirectMerge) {
+                        els.telemetryClipBadge.textContent = `🔗 GABUNG MURNI [VIDEO #${index + 1}] • TANPA AUTO-EDIT`;
+                        els.telemetryClipBadge.className = 'text-amber-300 font-bold';
+                        if (els.telemetryTransitionBadge) {
+                            els.telemetryTransitionBadge.textContent = `Transisi: ${seg.transition?.id === 'none' ? 'Tanpa Transisi' : seg.transition?.name}`;
+                            els.telemetryTransitionBadge.className = 'text-slate-300 font-medium';
+                        }
+                        els.telemetryMetricsText.textContent = `Durasi Klip: ${seg.duration.toFixed(2)}s | Potong Presisi Akhir MP3`;
+                    } else {
+                        els.telemetryClipBadge.textContent = seg.isGoldenHook
+                            ? `★ GOLDEN HOOK [SCENE #1] • SKOR ${seg.totalArgonScore}/100`
+                            : `SCENE #${index + 1} • SKOR ARGON ${seg.totalArgonScore}/100`;
+                        els.telemetryClipBadge.className = seg.isGoldenHook
+                            ? 'text-amber-400 font-bold'
+                            : 'text-cyan-300 font-semibold';
+
+                        if (els.telemetryTransitionBadge) {
+                            if (index === 0) {
+                                els.telemetryTransitionBadge.textContent = 'Transisi: Opening Hook';
+                                els.telemetryTransitionBadge.className = 'text-amber-300 font-medium';
+                            } else if (isTransitioning && activeTransObj) {
+                                els.telemetryTransitionBadge.textContent = `⚡ AKTIF: ${activeTransObj.name} + ${activeTransObj.sfxName}`;
+                                els.telemetryTransitionBadge.className = 'text-emerald-400 font-bold animate-pulse';
+                            } else {
+                                els.telemetryTransitionBadge.textContent = `Transisi: ${seg.transition?.name || 'Hard Cut'}`;
+                                els.telemetryTransitionBadge.className = 'text-amber-300 font-medium';
+                            }
+                        }
+
+                        els.telemetryMetricsText.textContent = `Tajam: ${seg.sharpnessScore} | Gerak: ${seg.motionScore} | Warna: ${seg.vibrancyScore}`;
+                    }
+                }
+            }
+        }
+
+        function formatSec(sec) {
+            const m = Math.floor(sec / 60);
+            const s = (sec % 60).toFixed(2).padStart(5, '0');
+            return `${String(m).padStart(2, '0')}:${s}`;
+        }
+
+        async function seekAndRenderPreviewAtTime(timelineSec) {
+            const found = findSegmentAtTimelineTime(timelineSec);
+            if (!found) {
+                drawSmartCenterCropFrame(null, null, 0);
+                return;
+            }
+            const { seg, index } = found;
+            const clipElapsed = Math.max(0, timelineSec - seg.timelineStart);
+
+            // Jika sedang berada di jendela transisi saat scrubbing manual, siapkan frame akhir klip sebelumnya dari decoder klip sebelumnya
+            if (index > 0 && clipElapsed < state.transitionDuration && seg.transition?.id !== 'none') {
+                const prevSeg = state.timeline[index - 1];
+                await seekVideoTo(prevSeg.videoEl, Math.max(0, prevSeg.endSec - 0.04));
+                paintVideoCenterCroppedToCtx(outgoingBufferCtx, els.mainPreviewCanvas.width, els.mainPreviewCanvas.height, prevSeg.videoEl);
+            }
+
+            const localVideoTime = seg.startSec + clipElapsed;
+            await seekVideoTo(seg.videoEl, localVideoTime);
+            drawSmartCenterCropFrame(seg.videoEl, found, timelineSec);
+        }
+
+        function renderCurrentPreviewFrame(timelineSec) {
+            const found = findSegmentAtTimelineTime(timelineSec);
+            if (!found) return;
+            drawSmartCenterCropFrame(found.seg.videoEl, found, timelineSec);
+        }
+
+        els.timelineScrubber.addEventListener('input', async (e) => {
+            stopPreviewPlayback();
+            state.currentPlayTime = parseFloat(e.target.value);
+            await seekAndRenderPreviewAtTime(state.currentPlayTime);
+        });
+
+        // Real-time Synced Playback (Dual-Decoder Video Cuts + Random Visual Transitions + Web Audio SFX + Smart Auto-Ducking VO)
+        let lastActiveSegId = null;
+        let prewarmedNextSegIndex = -1;
+
+        function pauseAllVideoDecoders() {
+            state.videoFiles.forEach(v => {
+                try { v.videoEl.pause(); } catch (_) {}
+                if (v.videoElSecondary) {
+                    try { v.videoElSecondary.pause(); } catch (_) {}
+                }
+            });
+        }
+
+        async function startPreviewPlayback(customDestinationNode = null) {
+            if (!state.timeline.length) return;
+
+            // Hentikan sesi pemutaran sebelumnya terlebih dahulu untuk mencegah bug suara ganda (double audio)
+            stopPreviewPlayback();
+            const currentSessionId = ++state.playbackSessionId;
+
+            const totalVoDuration = getEffectiveTargetDuration();
+            if (state.currentPlayTime >= totalVoDuration - 0.05) {
+                state.currentPlayTime = 0;
+            }
+
+            const audioCtx = getAudioContext();
+            await audioCtx.resume().catch(() => {});
+
+            // Pre-seek initial clip before starting audio clock
+            const initialFound = findSegmentAtTimelineTime(state.currentPlayTime);
+            if (initialFound) {
+                const clipOffset = Math.max(0, state.currentPlayTime - initialFound.seg.timelineStart);
+                await seekVideoTo(initialFound.seg.videoEl, initialFound.seg.startSec + clipOffset);
+                // Jika user menekan Stop/Play lagi saat menunggu seek selesai, batalkan sesi usang ini
+                if (currentSessionId !== state.playbackSessionId) return;
+                paintVideoCenterCroppedToCtx(outgoingBufferCtx, els.mainPreviewCanvas.width, els.mainPreviewCanvas.height, initialFound.seg.videoEl);
+            }
+
+            state.scheduledSfxNodes = [];
+            state.scheduledOrigAudioNodes = [];
+            state.isPlaying = true;
+            els.playBtnText.textContent = 'Jeda Preview';
+            lastActiveSegId = null;
+            prewarmedNextSegIndex = -1;
+
+            state.playStartOffset = state.currentPlayTime;
+            state.playStartWallTime = audioCtx.currentTime;
+
+            // Mainkan Voice Over MP3 jika tersedia
+            if (state.audioFile && state.audioFile.audioBuffer) {
+                const sourceNode = audioCtx.createBufferSource();
+                sourceNode.buffer = state.audioFile.audioBuffer;
+                sourceNode.connect(audioCtx.destination);
+                if (customDestinationNode) {
+                    sourceNode.connect(customDestinationNode);
+                }
+                state.activeAudioSource = sourceNode;
+                sourceNode.start(0, state.playStartOffset);
+            }
+
+            // Siapkan Master GainNode untuk Audio Original Video (mendukung kontrol live, Smart Auto-Ducking VO & perekaman MP4)
+            const origMasterGain = audioCtx.createGain();
+            const baseOrigVol = state.enableOrigAudio ? state.origAudioVolume : 0;
+            origMasterGain.gain.setValueAtTime(baseOrigVol, audioCtx.currentTime);
+
+            // Terapkan kurva Smart Auto-Ducking VO jika diaktifkan dan ada Voice Over
+            if (state.enableOrigAudio && state.autoDucking && state.audioFile?.voiceEnvelope?.length) {
+                const env = state.audioFile.voiceEnvelope;
+                const stepSec = 0.05;
+                const startIdx = Math.floor(state.playStartOffset / stepSec);
+                for (let idx = startIdx; idx < env.length; idx++) {
+                    const relSec = (idx * stepSec) - state.playStartOffset;
+                    if (relSec < 0) continue;
+                    const wallT = state.playStartWallTime + relSec;
+                    const rms = env[idx];
+                    // Jika RMS suara narasi aktif (> 0.025), turunkan volume audio asli video ke 28% dari levelnya agar VO jernih
+                    const duckFactor = rms > 0.025 ? 0.28 : 1.0;
+                    origMasterGain.gain.setTargetAtTime(baseOrigVol * duckFactor, wallT, 0.035);
+                }
+            }
+
+            origMasterGain.connect(audioCtx.destination);
+            if (customDestinationNode) {
+                origMasterGain.connect(customDestinationNode);
+            }
+            state.origAudioMasterGain = origMasterGain;
+
+            if (initialFound) {
+                initialFound.seg.videoEl.play().catch(() => {});
+                lastActiveSegId = initialFound.seg.id + '_' + initialFound.index;
+            }
+
+            // Jadwalkan Audio Original dari masing-masing potongan video di timeline
+            for (let i = 0; i < state.timeline.length; i++) {
+                const seg = state.timeline[i];
+                seg.activeClipGainNode = null;
+                if (!seg.hasAudio || !seg.sourceAudioBuffer) continue;
+                if (seg.timelineEnd <= state.playStartOffset + 0.01) continue;
+
+                const isAlreadyInProgress = seg.timelineStart < state.playStartOffset;
+                const delayFromNow = isAlreadyInProgress ? 0 : (seg.timelineStart - state.playStartOffset);
+                const offsetInClip = isAlreadyInProgress ? (state.playStartOffset - seg.timelineStart) : 0;
+                const playDur = Math.max(0.02, seg.duration - offsetInClip);
+                const sourceOffsetSec = Math.min(
+                    Math.max(0, seg.startSec + offsetInClip),
+                    Math.max(0, seg.sourceAudioBuffer.duration - 0.05)
+                );
+
+                if (sourceOffsetSec >= seg.sourceAudioBuffer.duration) continue;
+
+                const clipSource = audioCtx.createBufferSource();
+                clipSource.buffer = seg.sourceAudioBuffer;
+
+                // Envelope micro-fade untuk mencegah suara klik saat pergantian potongan video
+                const envGain = audioCtx.createGain();
+                const clipStartWall = state.playStartWallTime + delayFromNow;
+                const clipEndWall = clipStartWall + playDur;
+                const fadeSec = Math.min(0.025, playDur * 0.2);
+
+                envGain.gain.setValueAtTime(0.001, clipStartWall);
+                envGain.gain.linearRampToValueAtTime(1.0, clipStartWall + fadeSec);
+                envGain.gain.setValueAtTime(1.0, Math.max(clipStartWall + fadeSec, clipEndWall - fadeSec));
+                envGain.gain.linearRampToValueAtTime(0.001, clipEndWall);
+
+                // Per-clip Mute/Unmute GainNode
+                const clipMuteGain = audioCtx.createGain();
+                clipMuteGain.gain.setValueAtTime(seg.clipAudioMuted ? 0 : 1, audioCtx.currentTime);
+                seg.activeClipGainNode = clipMuteGain;
+
+                clipSource.connect(envGain);
+                envGain.connect(clipMuteGain);
+                clipMuteGain.connect(origMasterGain);
+
+                clipSource.start(clipStartWall, sourceOffsetSec, playDur);
+                state.scheduledOrigAudioNodes.push(clipSource);
+            }
+
+            // Jadwalkan seluruh Sound Effect (SFX) transisi secara presisi di Web Audio API
+            if (state.enableSfx && state.transitionMode !== 'none' && state.processingMode === 'auto_edit') {
+                for (let i = 1; i < state.timeline.length; i++) {
+                    const seg = state.timeline[i];
+                    const cutTime = seg.timelineStart;
+                    if (cutTime >= state.playStartOffset - 0.02 && cutTime < totalVoDuration) {
+                        const delayFromNow = Math.max(0, cutTime - state.playStartOffset);
+                        const sfxId = seg.transition?.sfxId || 'none';
+                        const nodes = triggerProceduralTransitionSfx(sfxId, customDestinationNode, delayFromNow);
+                        if (nodes) state.scheduledSfxNodes.push(...nodes);
+                    }
+                }
+            }
+
+            const tick = () => {
+                if (!state.isPlaying || currentSessionId !== state.playbackSessionId) return;
+
+                const elapsed = audioCtx.currentTime - state.playStartWallTime;
+                const currTime = state.playStartOffset + elapsed;
+
+                // Potong otomatis tepat saat Voice Over / target durasi selesai
+                if (currTime >= totalVoDuration) {
+                    state.currentPlayTime = totalVoDuration;
+                    els.timelineScrubber.value = totalVoDuration;
+                    renderCurrentPreviewFrame(totalVoDuration);
+                    stopPreviewPlayback();
+                    return;
+                }
+
+                state.currentPlayTime = currTime;
+                els.timelineScrubber.value = currTime;
+
+                const found = findSegmentAtTimelineTime(currTime);
+                if (found) {
+                    const { seg, index } = found;
+                    const segKey = seg.id + '_' + index;
+                    const clipElapsed = Math.max(0, currTime - seg.timelineStart);
+                    const desiredVideoTime = seg.startSec + clipElapsed;
+
+                    // Dual-Decoder Pre-Warming: 0.38 detik sebelum klip saat ini habis, siapkan decoder klip berikutnya di titik startSec
+                    const timeRemainingInClip = seg.timelineEnd - currTime;
+                    if (timeRemainingInClip <= 0.38 && index + 1 < state.timeline.length && prewarmedNextSegIndex !== index + 1) {
+                        const nextSeg = state.timeline[index + 1];
+                        if (nextSeg.videoEl !== seg.videoEl) {
+                            prewarmedNextSegIndex = index + 1;
+                            nextSeg.videoEl.pause();
+                            nextSeg.videoEl.currentTime = nextSeg.startSec;
+                        }
+                    }
+
+                    if (segKey !== lastActiveSegId) {
+                        // Simpan snapshot frame keluar ke outgoingBufferCanvas dan biarkan klip sebelumnya tetap siap untuk transisi mulus
+                        if (index > 0) {
+                            const prevSeg = state.timeline[index - 1];
+                            paintVideoCenterCroppedToCtx(
+                                outgoingBufferCtx,
+                                els.mainPreviewCanvas.width,
+                                els.mainPreviewCanvas.height,
+                                prevSeg.videoEl
+                            );
+                            if (prevSeg.videoEl !== seg.videoEl) {
+                                prevSeg.videoEl.pause();
+                            }
+                        }
+
+                        if (Math.abs(seg.videoEl.currentTime - desiredVideoTime) > 0.12) {
+                            seg.videoEl.currentTime = desiredVideoTime;
+                        }
+                        seg.videoEl.play().catch(() => {});
+                        lastActiveSegId = segKey;
+                    } else if (Math.abs(seg.videoEl.currentTime - desiredVideoTime) > 0.28) {
+                        seg.videoEl.currentTime = desiredVideoTime;
+                    }
+
+                    // Selama transisi berlangsung, jika decoder klip sebelumnya berbeda dari decoder aktif, gambar frame live klip keluar
+                    if (index > 0 && clipElapsed < state.transitionDuration && seg.transition?.id !== 'none') {
+                        const prevSeg = state.timeline[index - 1];
+                        if (prevSeg.videoEl !== seg.videoEl && prevSeg.videoEl.readyState >= 2) {
+                            paintVideoCenterCroppedToCtx(
+                                outgoingBufferCtx,
+                                els.mainPreviewCanvas.width,
+                                els.mainPreviewCanvas.height,
+                                prevSeg.videoEl
+                            );
+                        }
+                    }
+
+                    drawSmartCenterCropFrame(seg.videoEl, found, currTime);
+                }
+
+                state.animationFrameId = requestAnimationFrame(tick);
+            };
+
+            state.animationFrameId = requestAnimationFrame(tick);
+        }
+
+        function stopPreviewPlayback() {
+            state.playbackSessionId++;
+            state.isPlaying = false;
+            if (state.animationFrameId) {
+                cancelAnimationFrame(state.animationFrameId);
+                state.animationFrameId = null;
+            }
+            if (state.activeAudioSource) {
+                try {
+                    state.activeAudioSource.stop();
+                    state.activeAudioSource.disconnect();
+                } catch (_) {}
+                state.activeAudioSource = null;
+            }
+            if (state.scheduledSfxNodes && state.scheduledSfxNodes.length) {
+                state.scheduledSfxNodes.forEach(node => {
+                    try { node.stop(); node.disconnect(); } catch (_) {}
+                });
+                state.scheduledSfxNodes = [];
+            }
+            if (state.scheduledOrigAudioNodes && state.scheduledOrigAudioNodes.length) {
+                state.scheduledOrigAudioNodes.forEach(node => {
+                    try { node.stop(); node.disconnect(); } catch (_) {}
+                });
+                state.scheduledOrigAudioNodes = [];
+            }
+            if (state.origAudioMasterGain) {
+                try { state.origAudioMasterGain.disconnect(); } catch (_) {}
+                state.origAudioMasterGain = null;
+            }
+            pauseAllVideoDecoders();
+            els.playBtnText.textContent = 'Putar Preview';
+        }
+
+        els.btnPlayPause.addEventListener('click', () => {
+            if (state.isPlaying) {
+                stopPreviewPlayback();
+            } else {
+                startPreviewPlayback();
+            }
+        });
+
+        els.btnStopPreview.addEventListener('click', async () => {
+            stopPreviewPlayback();
+            state.currentPlayTime = 0;
+            els.timelineScrubber.value = 0;
+            await seekAndRenderPreviewAtTime(0);
+        });
+
+        /***********************************************************************
+         * 6. FULL HD 1080p MP4 VIDEO + VOICE OVER + TRANSITION SFX RENDERER
+         ***********************************************************************/
+        els.btnRenderFinal.addEventListener('click', async () => {
+            if (!state.timeline.length || state.isRendering) return;
+
+            stopPreviewPlayback();
+
+            // Jika dalam mode Auto-Edit dan opsi Acak Variasi Transisi saat Render aktif, acak ulang kombinasi transisi
+            if (
+                state.processingMode === 'auto_edit' &&
+                els.chkAutoReshuffleRender &&
+                els.chkAutoReshuffleRender.checked &&
+                state.transitionMode !== 'none'
+            ) {
+                randomizeTimelineTransitions();
+                renderTimelineCardsUI();
+                logMessage('Kombinasi transisi & SFX diacak secara otomatis untuk menghasilkan variasi video yang unik.', 'info');
+            }
+
+            state.isRendering = true;
+            els.btnRenderFinal.disabled = true;
+            els.btnRunArgon.disabled = true;
+            els.downloadResultBox.classList.add('hidden');
+
+            // Kunci resolusi kanvas & buffer transisi ke 1080p murni sebelum perekaman dimulai
+            if (state.aspectRatio === '9:16') {
+                els.mainPreviewCanvas.width = 1080;
+                els.mainPreviewCanvas.height = 1920;
+                syncOffscreenBufferSizes(1080, 1920);
+            } else {
+                els.mainPreviewCanvas.width = 1920;
+                els.mainPreviewCanvas.height = 1080;
+                syncOffscreenBufferSizes(1920, 1080);
+            }
+
+            const totalVoDuration = getEffectiveTargetDuration();
+            const resText = state.aspectRatio === '9:16' ? '1080×1920' : '1920×1080';
+            logMessage(`Memulai Render MP4 Full HD 1080p (${resText}, 14 Mbps, Zero-Overlay) sesuai durasi target (${totalVoDuration.toFixed(3)}s)...`, 'info');
+            els.statusText.textContent = 'Merender MP4 1080p...';
+            els.statusDot.className = 'w-2 h-2 rounded-full bg-rose-500 animate-ping';
+
+            const audioCtx = getAudioContext();
+            await audioCtx.resume().catch(() => {});
+            const destNode = audioCtx.createMediaStreamDestination();
+            const canvasStream = els.mainPreviewCanvas.captureStream(30);
+
+            const combinedStream = new MediaStream([
+                ...canvasStream.getVideoTracks(),
+                ...destNode.stream.getAudioTracks()
+            ]);
+
+            const mp4MimeCandidates = [
+                'video/mp4;codecs="avc1.640028,mp4a.40.2"',
+                'video/mp4;codecs="avc1.42E01E,mp4a.40.2"',
+                'video/mp4;codecs=avc1.640028,mp4a.40.2',
+                'video/mp4;codecs=avc1.42E01E,mp4a.40.2',
+                'video/mp4;codecs=avc1',
+                'video/mp4',
+                'video/webm;codecs=h264,opus',
+                'video/webm;codecs=vp9,opus',
+                'video/webm'
+            ];
+            const selectedMime = mp4MimeCandidates.find(m => {
+                try { return MediaRecorder.isTypeSupported(m); } catch (_) { return false; }
+            }) || '';
+
+            const recorderOptions = {
+                videoBitsPerSecond: 14000000, // 14 Mbps Full HD 1080p
+                audioBitsPerSecond: 192000
+            };
+            if (selectedMime) {
+                recorderOptions.mimeType = selectedMime;
+            }
+
+            const chunks = [];
+            const recorder = new MediaRecorder(combinedStream, recorderOptions);
+
+            recorder.ondataavailable = (e) => {
+                if (e.data && e.data.size > 0) chunks.push(e.data);
+            };
+
+            recorder.onstop = () => {
+                const mp4Blob = new Blob(chunks, { type: 'video/mp4' });
+                const downloadUrl = URL.createObjectURL(mp4Blob);
+                const sizeMb = (mp4Blob.size / (1024 * 1024)).toFixed(2);
+                const ratioSlug = state.aspectRatio.replace(':', 'x');
+                const fileName = `Argon_1080p_${ratioSlug}_Clean.mp4`;
+
+                els.downloadVideoLink.href = downloadUrl;
+                els.downloadVideoLink.download = fileName;
+                els.downloadBtnLabel.textContent = `Unduh ${fileName} (${sizeMb} MB • 1080p MP4)`;
+                els.downloadResultBox.classList.remove('hidden');
+
+                state.isRendering = false;
+                els.btnRenderFinal.disabled = false;
+                els.btnRunArgon.disabled = false;
+                els.statusText.textContent = 'MP4 1080p Siap';
+                els.statusDot.className = 'w-2 h-2 rounded-full bg-emerald-400';
+                setProgress(100, `Render 1080p Selesai! Durasi Eksak: ${totalVoDuration.toFixed(2)}s`);
+                logMessage(`Render MP4 1080p (${resText}) selesai tanpa overlay! Video terpotong otomatis tepat pada akhir Voice Over (${totalVoDuration.toFixed(3)}s).`, 'success');
+            };
+
+            // Mulai perekaman dari 0.00s hingga akhir durasi MP3
+            state.currentPlayTime = 0;
+            recorder.start(100);
+            await startPreviewPlayback(destNode);
+
+            // Monitor progress render hingga selesai
+            const renderMonitor = setInterval(() => {
+                if (!state.isPlaying) {
+                    clearInterval(renderMonitor);
+                    if (recorder.state !== 'inactive') {
+                        recorder.stop();
+                    }
+                } else {
+                    const pct = (state.currentPlayTime / totalVoDuration) * 100;
+                    setProgress(pct, `Merender MP4 1080p Clean (${state.currentPlayTime.toFixed(1)}s / ${totalVoDuration.toFixed(1)}s)...`);
+                }
+            }, 100);
+        });
+
+        /***********************************************************************
+         * 7. DEMO SAMPLE GENERATOR (4 CLEAN VISUAL VIDEOS WITHOUT TEXT OVERLAYS)
+         ***********************************************************************/
+        els.btnLoadDemo.addEventListener('click', async () => {
+            els.btnLoadDemo.disabled = true;
+            stopPreviewPlayback();
+            state.videoFiles = [];
+            setProgress(8, 'Membangkitkan 4 sampel video sinematik bersih & Voice Over...');
+            logMessage('Membangkitkan 4 sampel video multi-scene bersih (tanpa teks di kanvas) beserta Audio Asli & Voice Over untuk pengujian Argon...', 'info');
+
+            try {
+                // 1. Buat Voice Over AudioBuffer sintetis berdurasi 8.20 detik dengan jeda napas agar Smart Auto-Ducking VO terlihat jelas
+                const audioCtx = getAudioContext();
+                const voDuration = 8.20;
+                const sampleRate = audioCtx.sampleRate;
+                const frameCount = Math.floor(sampleRate * voDuration);
+                const voBuffer = audioCtx.createBuffer(1, frameCount, sampleRate);
+                const channel = voBuffer.getChannelData(0);
+
+                for (let i = 0; i < frameCount; i++) {
+                    const t = i / sampleRate;
+                    // Buat jeda hening singkat di sekitar 2.4s-2.9s dan 5.3s-5.8s untuk mendemonstrasikan Smart Auto-Ducking VO
+                    const inBreathPause = (t > 2.4 && t < 2.9) || (t > 5.3 && t < 5.8);
+                    const syllableEnv = inBreathPause ? 0 : Math.max(0, Math.sin(t * Math.PI * 3.8) * Math.cos(t * Math.PI * 1.3));
+                    const f0 = 145 + 25 * Math.sin(t * 2.5);
+                    const voiceWave =
+                        0.50 * Math.sin(2 * Math.PI * f0 * t) +
+                        0.25 * Math.sin(2 * Math.PI * (f0 * 2) * t) +
+                        0.12 * Math.sin(2 * Math.PI * (f0 * 3) * t);
+                    const fadeOut = t > (voDuration - 0.25) ? Math.max(0, (voDuration - t) / 0.25) : 1.0;
+                    channel[i] = voiceWave * syllableEnv * 0.30 * fadeOut;
+                }
+
+                state.audioFile = {
+                    name: 'Sample_VoiceOver_Narasi_Utama.mp3',
+                    duration: voDuration,
+                    audioBuffer: voBuffer,
+                    voiceEnvelope: computeVoiceActivityEnvelope(voBuffer, 0.05)
+                };
+                els.audioFileName.textContent = state.audioFile.name;
+                els.audioDurationLabel.textContent = `Durasi Terkunci: ${voDuration.toFixed(3)} detik`;
+                els.statVoDuration.textContent = `${voDuration.toFixed(2)} dtk`;
+
+                // 2. Buat 4 Video Blob Sintetis Bersih (Mengandung scene Golden Hook tajam, scene B-Roll dinamis, scene duplikat pHash, dan scene malam)
+                setProgress(22, 'Merender Sampel Video 1/4 (Architectural Sunlight)...');
+                const demoClip1 = await generateSyntheticDemoVideoBlob('01_Architectural_Sunlight.webm', 'kinetic_and_duplicate', 3.6);
+                setProgress(45, 'Merender Sampel Video 2/4 (Silk Bokeh Studio)...');
+                const demoClip2 = await generateSyntheticDemoVideoBlob('02_Silk_Bokeh_Studio.webm', 'vibrant_and_blur', 3.6);
+                setProgress(68, 'Merender Sampel Video 3/4 (Emerald Prism Macro)...');
+                const demoClip3 = await generateSyntheticDemoVideoBlob('03_Emerald_Prism_Macro.webm', 'emerald_prism', 3.4);
+                setProgress(85, 'Merender Sampel Video 4/4 (Golden Hour Horizon)...');
+                const demoClip4 = await generateSyntheticDemoVideoBlob('04_Golden_Hour_Horizon.webm', 'golden_horizon', 3.4);
+
+                state.videoFiles.push(demoClip1, demoClip2, demoClip3, demoClip4);
+                renderVideoFilesList();
+                updateMediaCounters();
+
+                logMessage('4 Sampel Demo berhasil dimuat! Menjalankan pemrosesan sesuai mode aktif...', 'success');
+                await executeSelectedPipeline();
+            } catch (err) {
+                logMessage(`Gagal membuat demo: ${err.message}`, 'error');
+            } finally {
+                els.btnLoadDemo.disabled = false;
+            }
+        });
+
+        async function generateSyntheticDemoVideoBlob(fileName, mode, durationSec) {
+            const c = document.createElement('canvas');
+            c.width = 1280;
+            c.height = 720;
+            const ctx = c.getContext('2d');
+            const stream = c.captureStream(30);
+            const mime = MediaRecorder.isTypeSupported('video/webm;codecs=vp8') ? 'video/webm;codecs=vp8' : 'video/webm';
+            const rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 5000000 });
+            const chunks = [];
+            rec.ondataavailable = e => { if (e.data && e.data.size > 0) chunks.push(e.data); };
+
+            // Bangkitkan Audio Asli (Ambient Room / Natural Foley) sintetis agar fitur ON/OFF Audio Original bisa langsung diuji pada Sampel Demo
+            const audioCtx = getAudioContext();
+            const sr = audioCtx.sampleRate;
+            const totalSamples = Math.floor(sr * durationSec);
+            const synthOrigAudio = audioCtx.createBuffer(1, totalSamples, sr);
+            const chData = synthOrigAudio.getChannelData(0);
+            for (let i = 0; i < totalSamples; i++) {
+                const t = i / sr;
+                const breeze = (Math.random() * 2 - 1) * 0.04 * (0.5 + 0.5 * Math.sin(t * 2.4));
+                const chimeFreq = mode === 'kinetic_and_duplicate' ? 329.63 : 392.00;
+                const ambientChord =
+                    0.08 * Math.sin(2 * Math.PI * chimeFreq * t) +
+                    0.05 * Math.sin(2 * Math.PI * (chimeFreq * 1.5) * t);
+                const pulse = 0.55 + 0.45 * Math.sin(t * Math.PI * 1.8);
+                chData[i] = (breeze + ambientChord * pulse) * 0.75;
+            }
+
+            return new Promise((resolve) => {
+                rec.onstop = async () => {
+                    const blob = new Blob(chunks, { type: 'video/webm' });
+                    blob.name = fileName;
+                    const meta = await loadVideoMetadata(blob);
+                    meta.name = fileName;
+                    meta.audioBuffer = synthOrigAudio;
+                    meta.hasAudio = true;
+                    resolve(meta);
+                };
+
+                rec.start();
+                const startT = performance.now();
+
+                function drawLoop(now) {
+                    const elapsed = (now - startT) / 1000;
+                    if (elapsed >= durationSec) {
+                        rec.stop();
+                        return;
+                    }
+
+                    ctx.save();
+                    if (mode === 'kinetic_and_duplicate') {
+                        if (elapsed < 2.1) {
+                            // Scene 1: Clean Architectural Curtain Drape & Warm Sunlight Rays (Zero Text)
+                            const bgGrad = ctx.createLinearGradient(0, 0, c.width, c.height);
+                            bgGrad.addColorStop(0, '#1C1917');
+                            bgGrad.addColorStop(0.5, '#44403C');
+                            bgGrad.addColorStop(1, '#78350F');
+                            ctx.fillStyle = bgGrad;
+                            ctx.fillRect(0, 0, c.width, c.height);
+
+                            // Lipatan tirai vertikal realistis dengan tekstur cahaya tajam (Laplacian tinggi & gerakan lembut)
+                            const folds = 18;
+                            const foldW = c.width / folds;
+                            for (let i = 0; i < folds; i++) {
+                                const sway = Math.sin(elapsed * 2.8 + i * 0.55) * 14;
+                                const x0 = i * foldW + sway;
+                                const fGrad = ctx.createLinearGradient(x0, 0, x0 + foldW, 0);
+                                fGrad.addColorStop(0, '#292524');
+                                fGrad.addColorStop(0.45, '#D6D3D1');
+                                fGrad.addColorStop(0.55, '#F5F5F4');
+                                fGrad.addColorStop(1, '#44403C');
+                                ctx.fillStyle = fGrad;
+                                ctx.fillRect(x0, 0, foldW + 2, c.height);
+                            }
+
+                            // Cahaya matahari hangat menyapu dari jendela
+                            const sunGrad = ctx.createRadialGradient(
+                                c.width * 0.35 + Math.sin(elapsed * 2.2) * 80,
+                                c.height * 0.3,
+                                30,
+                                c.width * 0.5,
+                                c.height * 0.5,
+                                680
+                            );
+                            sunGrad.addColorStop(0, 'rgba(253, 224, 71, 0.38)');
+                            sunGrad.addColorStop(0.5, 'rgba(251, 146, 60, 0.16)');
+                            sunGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                            ctx.fillStyle = sunGrad;
+                            ctx.fillRect(0, 0, c.width, c.height);
+                        } else {
+                            // Scene 2: Klip Statis / Duplikat (Tanpa teks, untuk dieliminasi oleh pHash 64-bit)
+                            const flatGrad = ctx.createLinearGradient(0, 0, 0, c.height);
+                            flatGrad.addColorStop(0, '#1E293B');
+                            flatGrad.addColorStop(1, '#0F172A');
+                            ctx.fillStyle = flatGrad;
+                            ctx.fillRect(0, 0, c.width, c.height);
+                            ctx.fillStyle = '#334155';
+                            ctx.fillRect(380, 180, 520, 360);
+                        }
+                    } else {
+                        if (elapsed < 2.1) {
+                            // Scene B1: Identik dengan Scene A2 untuk menguji Filter Anti-Duplikat pHash
+                            const flatGrad = ctx.createLinearGradient(0, 0, 0, c.height);
+                            flatGrad.addColorStop(0, '#1E293B');
+                            flatGrad.addColorStop(1, '#0F172A');
+                            ctx.fillStyle = flatGrad;
+                            ctx.fillRect(0, 0, c.width, c.height);
+                            ctx.fillStyle = '#334155';
+                            ctx.fillRect(380, 180, 520, 360);
+                        } else {
+                            // Scene B2: Clean Luxury Interior Bokeh & Silk Wave (Zero Text, High Vibrancy)
+                            const silkGrad = ctx.createLinearGradient(0, 0, c.width, c.height);
+                            silkGrad.addColorStop(0, '#0F172A');
+                            silkGrad.addColorStop(0.5, '#1E3A8A');
+                            silkGrad.addColorStop(1, '#047857');
+                            ctx.fillStyle = silkGrad;
+                            ctx.fillRect(0, 0, c.width, c.height);
+
+                            // Gelombang tekstur kain sutra & pencahayaan bokeh tajam
+                            for (let layer = 0; layer < 6; layer++) {
+                                ctx.beginPath();
+                                ctx.moveTo(0, c.height);
+                                for (let x = 0; x <= c.width; x += 24) {
+                                    const y =
+                                        c.height * (0.3 + layer * 0.1) +
+                                        Math.sin(x * 0.012 + elapsed * 3.2 + layer) * 38;
+                                    ctx.lineTo(x, y);
+                                }
+                                ctx.lineTo(c.width, c.height);
+                                ctx.closePath();
+                                ctx.fillStyle =
+                                    layer % 2 === 0
+                                        ? 'rgba(56, 189, 248, 0.22)'
+                                        : 'rgba(250, 204, 21, 0.18)';
+                                ctx.fill();
+                                ctx.strokeStyle = 'rgba(255, 255, 255, 0.28)';
+                                ctx.lineWidth = 2;
+                                ctx.stroke();
+                            }
+
+                            for (let b = 0; b < 14; b++) {
+                                const bx = ((b * 110 + elapsed * 75) % (c.width + 80)) - 40;
+                                const by = 120 + (b % 5) * 110 + Math.cos(elapsed * 2.5 + b) * 28;
+                                const rad = 18 + (b % 4) * 9;
+                                ctx.beginPath();
+                                ctx.arc(bx, by, rad, 0, Math.PI * 2);
+                                ctx.fillStyle = b % 2 === 0 ? 'rgba(253, 224, 71, 0.55)' : 'rgba(45, 212, 191, 0.5)';
+                                ctx.fill();
+                                ctx.lineWidth = 2;
+                                ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
+                                ctx.stroke();
+                            }
+                        }
+                    }
+
+                    if (mode === 'emerald_prism') {
+                        // Scene C: Clean Rotating Geometric Crystal Prism Rays (High Sharpness & Sweet-Spot Motion, Zero Text)
+                        const prismBg = ctx.createLinearGradient(0, 0, c.width, c.height);
+                        prismBg.addColorStop(0, '#022C22');
+                        prismBg.addColorStop(0.5, '#064E3B');
+                        prismBg.addColorStop(1, '#0F172A');
+                        ctx.fillStyle = prismBg;
+                        ctx.fillRect(0, 0, c.width, c.height);
+
+                        const cx = c.width / 2;
+                        const cy = c.height / 2;
+                        for (let ring = 0; ring < 7; ring++) {
+                            const r = 70 + ring * 52;
+                            const rot = elapsed * (1.2 + ring * 0.15) * (ring % 2 === 0 ? 1 : -1);
+                            ctx.save();
+                            ctx.translate(cx, cy);
+                            ctx.rotate(rot);
+                            ctx.beginPath();
+                            for (let s = 0; s < 6; s++) {
+                                const ang = (s * Math.PI) / 3;
+                                const px = Math.cos(ang) * r;
+                                const py = Math.sin(ang) * r;
+                                if (s === 0) ctx.moveTo(px, py);
+                                else ctx.lineTo(px, py);
+                            }
+                            ctx.closePath();
+                            ctx.strokeStyle = ring % 2 === 0 ? 'rgba(52, 211, 153, 0.75)' : 'rgba(56, 189, 248, 0.65)';
+                            ctx.lineWidth = 3;
+                            ctx.stroke();
+                            ctx.restore();
+                        }
+                    } else if (mode === 'golden_horizon') {
+                        // Scene D: Clean Golden Sunburst Reflection Over Ocean Waves (High Vibrancy & Contrast, Zero Text)
+                        const skyGrad = ctx.createLinearGradient(0, 0, 0, c.height);
+                        skyGrad.addColorStop(0, '#451A03');
+                        skyGrad.addColorStop(0.48, '#D97706');
+                        skyGrad.addColorStop(0.52, '#F59E0B');
+                        skyGrad.addColorStop(1, '#0F172A');
+                        ctx.fillStyle = skyGrad;
+                        ctx.fillRect(0, 0, c.width, c.height);
+
+                        // Matahari bergerak lembut di cakrawala
+                        const sunY = c.height * 0.44 + Math.sin(elapsed * 1.8) * 14;
+                        ctx.beginPath();
+                        ctx.arc(c.width * 0.5, sunY, 95, 0, Math.PI * 2);
+                        ctx.fillStyle = 'rgba(254, 240, 138, 0.88)';
+                        ctx.fill();
+
+                        // Pantulan riak air tajam di bagian bawah
+                        for (let w = 0; w < 16; w++) {
+                            const wy = c.height * 0.54 + w * 18;
+                            const waveWidth = 260 - w * 11 + Math.sin(elapsed * 4.2 + w) * 35;
+                            const wx = (c.width - waveWidth) / 2 + Math.cos(elapsed * 3.0 + w) * 18;
+                            ctx.fillStyle = 'rgba(253, 224, 71, 0.65)';
+                            ctx.fillRect(wx, wy, waveWidth, 6);
+                        }
+                    }
+
+                    ctx.restore();
+                    requestAnimationFrame(drawLoop);
+                }
+
+                requestAnimationFrame(drawLoop);
+            });
+        }
+
+        // Bind Main Execute Button
+        els.btnRunArgon.addEventListener('click', executeSelectedPipeline);
+
+        // Initial Clean 1080p Canvas Paint (Strictly Zero Text/Overlay on Canvas)
+        window.addEventListener('DOMContentLoaded', () => {
+            const canvas = els.mainPreviewCanvas;
+            const ctx = canvas.getContext('2d');
+            const bg = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            bg.addColorStop(0, '#070B14');
+            bg.addColorStop(1, '#0F172A');
+            ctx.fillStyle = bg;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        });
+    </script>
+</body>
+</html>
